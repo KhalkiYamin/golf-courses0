@@ -1,0 +1,38 @@
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { AdvisorsChangePasswordComponent } from './advisors-change-password/advisors-change-password.component';
+import { AdvisorsDashboardComponent } from './advisors-dashboard/advisors-dashboard.component';
+import { AdvisorsProfileSettingsComponent } from './advisors-profile-settings/advisors-profile-settings.component';
+import { AdvisorsRegisterComponent } from './advisors-register/advisors-register.component';
+import { BatchComponent } from './batch/batch.component';
+import { ChatAdvisorComponent } from './chat-advisor/chat-advisor.component';
+import { GolfAdvisorsComponent } from './golf-advisors.component';
+import { GolferProfileComponent } from './golfer-profile/golfer-profile.component';
+import { MyGolfersComponent } from './my-golfers/my-golfers.component';
+import { ReviewsComponent } from './reviews/reviews.component';
+import { ScheduleTimingsComponent } from './schedule-timings/schedule-timings.component';
+import { SocialMediaComponent } from './social-media/social-media.component';
+
+const routes: Routes = [
+  { path: '', component: GolfAdvisorsComponent,
+    children: [
+      { path: 'advisors-dashboard', component: AdvisorsDashboardComponent },
+      { path: 'batch', component: BatchComponent },
+      { path: 'schedule-timings', component: ScheduleTimingsComponent },
+      { path: 'my-golfers', component: MyGolfersComponent },
+      { path: 'golfer-profile', component: GolferProfileComponent },
+      { path: 'chat-advisor', component: ChatAdvisorComponent },
+      { path: 'advisors-profile-settings', component: AdvisorsProfileSettingsComponent },
+      { path: 'reviews', component: ReviewsComponent },
+      { path: 'advisors-register', component: AdvisorsRegisterComponent },
+      { path: 'social-media', component: SocialMediaComponent  },
+      { path: 'advisors-change-password', component: AdvisorsChangePasswordComponent }
+    ]
+  }
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class GolfAdvisorsRoutingModule { }
