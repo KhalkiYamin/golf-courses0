@@ -11,7 +11,6 @@ type Role = 'COACH' | 'ATHLETE' | '';
 })
 export class RegisterComponent {
 
-  // Champs communs
   nom: string = '';
   prenom: string = '';
   telephone: string = '';
@@ -19,21 +18,21 @@ export class RegisterComponent {
   password: string = '';
   role: Role = '';
 
-  // Champs Coach
   specialite: string = '';
   experience: number | null = null;
 
-  // Champs Athlète
   sport: string = '';
   niveau: string = '';
 
   loading: boolean = false;
   errorMsg: string = '';
+  successMsg: string = '';   // ✅ جديد
 
   constructor(private auth: AuthService, private router: Router) { }
 
   onRoleChange() {
     this.errorMsg = '';
+    this.successMsg = '';
 
     if (this.role === 'COACH') {
       this.sport = '';
@@ -46,23 +45,24 @@ export class RegisterComponent {
 
   submit() {
     this.errorMsg = '';
+    this.successMsg = '';
 
     if (!this.nom || !this.prenom || !this.email || !this.password || !this.role) {
-      this.errorMsg = 'عبّي الحقول الضرورية.';
+      this.errorMsg = 'Veuillez remplir tous les champs obligatoires.';
       return;
     }
     if (this.password.length < 6) {
-      this.errorMsg = 'كلمة السر لازم على الأقل 6 حروف.';
+      this.errorMsg = 'Le mot de passe doit contenir au moins 6 caractères.';
       return;
     }
 
     if (this.role === 'COACH' && !this.specialite) {
-      this.errorMsg = 'اكتب الاختصاص متاعك.';
+      this.errorMsg = 'Veuillez indiquer votre spécialité.';
       return;
     }
 
     if (this.role === 'ATHLETE' && (!this.sport || !this.niveau)) {
-      this.errorMsg = 'كمّل معلومات الرياضي (sport + niveau).';
+      this.errorMsg = 'Veuillez compléter les informations du profil athlète (sport + niveau).';
       return;
     }
 
@@ -72,8 +72,8 @@ export class RegisterComponent {
       email: this.email,
       password: this.password,
       telephone: this.telephone,
-      role: this.role,
-      enabled: true
+      role: this.role
+      // ❌ ما تبعثش enabled من الفرونت
     };
 
     if (this.role === 'COACH') {
@@ -89,14 +89,21 @@ export class RegisterComponent {
     this.loading = true;
 
     this.auth.register(payload).subscribe({
-      next: () => {
+      next: (res: any) => {
         this.loading = false;
-        this.router.navigate(['/login']);
+
+        // ✅ عرض رسالة النجاح اللي جاية من backend
+        this.successMsg = res?.message || "Inscription réussie ✅";
+
+        // ✅ Redirect بعد شوية
+        setTimeout(() => {
+          this.router.navigate(['/pages/login']);
+        }, 1500);
       },
       error: (err) => {
         this.loading = false;
         console.error(err);
-        this.errorMsg = err?.error?.message || 'صار خطأ في التسجيل.';
+        this.errorMsg = err?.error?.message || "Erreur lors de l'inscription.";
       }
     });
   }

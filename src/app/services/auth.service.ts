@@ -1,30 +1,44 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-    private baseUrl = 'http://localhost:8081/api/auth'; // نفس بورت Spring
+    private baseUrl = 'http://localhost:8081/api';
 
     constructor(private http: HttpClient) { }
 
-    register(data: any) {
-        return this.http.post<{ token: string }>(`${this.baseUrl}/register`, data);
+    register(data: any): Observable<any> {
+        return this.http.post<any>(`${this.baseUrl}/auth/register`, data);
     }
 
-    login(email: string, password: string) {
-        return this.http.post<{ token: string }>(`${this.baseUrl}/login`, { email, password })
+    login(loginRequest: { email: string; password: string }): Observable<any> {
+        return this.http.post<any>(`${this.baseUrl}/auth/login`, loginRequest)
             .pipe(
                 tap(res => {
-                    // حسب AuthResponse متاعك: token ولا accessToken؟
-                    const token = (res as any).token || (res as any).accessToken;
+                    const token = res.token || res.accessToken;
                     if (token) localStorage.setItem('token', token);
+                    if (res.role) localStorage.setItem('role', res.role);
                 })
             );
     }
 
-    logout() { localStorage.removeItem('token'); }
-    getToken() { return localStorage.getItem('token'); }
-    isLoggedIn() { return !!this.getToken(); }
+    logout(): void {
+        localStorage.removeItem('token');
+        localStorage.removeItem('role');
+    }
+
+    getToken(): string | null {
+        return localStorage.getItem('token');
+    }
+
+    getRole(): string | null {
+        return localStorage.getItem('role');
+    }
+
+    isLoggedIn(): boolean {
+        return !!this.getToken();
+    }
 }
