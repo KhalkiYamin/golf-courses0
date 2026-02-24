@@ -5199,96 +5199,327 @@ html.menu-opened body {
 /*-----------------
 	21. advisors Dashboard
 -----------------------*/
+/* ============ PAGE LAYOUT ============ */
+.admin-page {
+	background: #f6f7fb;
+	min-height: 100vh;
+	font-family: Arial, sans-serif;
+}
 
-.dash-widget {
-	-webkit-box-align: center;
-	-ms-flex-align: center;
-	align-items: center;
-	display: -webkit-box;
-	display: -ms-flexbox;
+.layout {
 	display: flex;
+	min-height: 100vh;
 }
 
-.circle-bar {
-	margin-right: 15px;
+/* ============ SIDEBAR ============ */
+.sidebar {
+	width: 260px;
+	background: #0f3b46;
+	color: #fff;
+	padding: 18px;
 }
 
-.dct-border-rht {
-	border-right: 1px solid #f0f0f0;
+.brand {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding-bottom: 16px;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+	margin-bottom: 16px;
 }
 
-.dash-widget h6 {
+.logo {
+	width: 44px;
+	height: 44px;
+	border-radius: 12px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(229, 189, 84, 0.95);
+	color: #1f2937;
+	font-weight: 800;
+}
+
+.brand-name {
+	font-weight: 800;
 	font-size: 16px;
-	font-weight: 400;
+	line-height: 1.1;
 }
 
-.dash-widget h3 {
-	font-size: 24px;
-	margin-bottom: 5px;
+.brand-sub {
+	opacity: 0.75;
+	font-size: 12px;
 }
 
-.dash-widget p {
-	color: #757575;
+.nav {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.nav-item {
+	color: rgba(255, 255, 255, 0.85);
+	text-decoration: none;
+	padding: 10px 12px;
+	border-radius: 10px;
+	display: block;
+}
+
+.nav-item:hover {
+	background: rgba(255, 255, 255, 0.10);
+	color: #fff;
+}
+
+.nav-item.active {
+	background: rgba(229, 189, 84, 0.20);
+	border: 1px solid rgba(229, 189, 84, 0.45);
+	color: #fff;
+}
+
+/* ============ MAIN ============ */
+.main {
+	flex: 1;
+	padding: 22px;
+}
+
+/* ============ TOPBAR ============ */
+.topbar {
+	background: #fff;
+	border: 1px solid #eef0f4;
+	border-radius: 14px;
+	padding: 18px 18px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	box-shadow: 0 10px 24px rgba(16, 24, 40, 0.06);
+	margin-bottom: 18px;
+}
+
+.title {
+	margin: 0;
+	font-size: 34px;
+	color: #111827;
+}
+
+.subtitle {
+	margin: 6px 0 0;
+	color: #6b7280;
 	font-size: 14px;
-	margin-bottom: 0;
 }
 
-.circle-bar>div {
-	display: inline-block;
-	position: relative;
-	text-align: center;
-	padding: 10px;
+.top-actions {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.search {
+	height: 40px;
+	width: 280px;
+	border: 1px solid #e5e7eb;
+	border-radius: 12px;
+	padding: 0 12px;
+	outline: none;
+	background: #fff;
+}
+
+.search:focus {
+	border-color: #e5bd54;
+	box-shadow: 0 0 0 3px rgba(229, 189, 84, 0.22);
+}
+
+.avatar {
+	width: 40px;
+	height: 40px;
+	border-radius: 12px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	background: #e5bd54;
-	border-radius: 50px;
-	border: 1px dashed;
+	color: #111827;
+	font-weight: 800;
 }
 
-.circle-bar>div img {
-	position: relative;
-	text-align: center;
-	margin: 0 auto;
-
+/* ============ CARDS GENERAL ============ */
+.card {
+	background: #fff;
+	border: 1px solid #eef0f4;
+	border-radius: 14px;
+	box-shadow: 0 10px 24px rgba(16, 24, 40, 0.06);
+	padding: 16px;
+	margin-bottom: 16px;
 }
 
-.circle-bar>div canvas {
-	width: 90px !important;
-	height: 90px !important;
+.card-head h3 {
+	margin: 0;
+	font-size: 18px;
+	color: #111827;
 }
 
-.dash-card .row {
-	margin-left: -10px;
-	margin-right: -10px;
+/* ============ STATS ============ */
+.stats {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 14px;
+	margin-bottom: 16px;
 }
 
-.dash-card .row>div {
-	padding-left: 10px;
-	padding-right: 10px;
+.stat-card h4 {
+	margin: 0;
+	color: #374151;
+	font-weight: 700;
+	font-size: 15px;
 }
 
-.appointment-tab {
-	margin-bottom: 30px;
+.stat-card h2 {
+	margin: 10px 0 6px;
+	font-size: 34px;
+	color: #111827;
+	font-weight: 900;
 }
 
-.appointment-tab .nav-tabs {
-	background-color: #fff;
-	padding: 1.5rem;
-	border: 1px solid #f0f0f0;
-	border-radius: .25rem 0.25rem 0 0 !important;
+.muted {
+	margin: 0;
+	color: #6b7280;
+	font-size: 13px;
+}
+
+/* ============ TABLE (DIV TABLE) ============ */
+.table {
+	margin-top: 12px;
+	border: 1px solid #eef0f4;
+	border-radius: 12px;
+	overflow: hidden;
+}
+
+.table .row {
+	display: grid;
+	grid-template-columns: 1.4fr 1.2fr 1fr 1fr 1fr;
+	gap: 10px;
+	padding: 12px 12px;
+	align-items: center;
+	border-bottom: 1px solid #f3f4f6;
+}
+
+.table .row:last-child {
 	border-bottom: 0;
 }
 
-.appointment-tab .tab-content {
-	padding-top: 0;
+.table .row.head {
+	background: #fafafa;
+	font-weight: 800;
+	color: #6b7280;
+	font-size: 13px;
 }
 
-.appointment-tab .card {
-	border-radius: 0;
+.table .row:hover:not(.head) {
+	background: #fcfcfc;
 }
 
-.submit-btn-bottom {
-	margin-bottom: 30px;
+.pending {
+	display: inline-block;
+	width: fit-content;
+	padding: 6px 10px;
+	border-radius: 999px;
+	background: rgba(229, 189, 84, 0.18);
+	color: #8a5a00;
+	font-weight: 800;
+	font-size: 12px;
 }
 
+/* actions */
+.actions {
+	display: flex;
+	gap: 8px;
+	justify-content: flex-start;
+}
+
+.mini {
+	width: 34px;
+	height: 34px;
+	border-radius: 10px;
+	border: 1px solid #e5e7eb;
+	background: #fff;
+	cursor: pointer;
+	font-weight: 900;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.mini:hover {
+	border-color: #e5bd54;
+	box-shadow: 0 0 0 3px rgba(229, 189, 84, 0.18);
+}
+
+.mini.ok {
+	color: #16a34a;
+}
+
+.mini.no {
+	color: #dc2626;
+}
+
+/* ============ QUICK ACTIONS ============ */
+.quick {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin-top: 12px;
+}
+
+.qbtn {
+	border: 1px solid #e5e7eb;
+	background: #fff;
+	padding: 10px 12px;
+	border-radius: 12px;
+	cursor: pointer;
+	font-weight: 700;
+}
+
+.qbtn:hover {
+	border-color: #e5bd54;
+	box-shadow: 0 0 0 3px rgba(229, 189, 84, 0.18);
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 1024px) {
+	.stats {
+		grid-template-columns: 1fr;
+	}
+
+	.search {
+		width: 200px;
+	}
+
+	.sidebar {
+		width: 220px;
+	}
+}
+
+@media (max-width: 768px) {
+	.layout {
+		flex-direction: column;
+	}
+
+	.sidebar {
+		width: 100%;
+	}
+
+	.topbar {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.search {
+		width: 100%;
+	}
+
+	.table .row {
+		grid-template-columns: 1fr;
+	}
+}
 
 /*-----------------
 	22. Customer Profile
@@ -5351,6 +5582,23 @@ html.menu-opened body {
 .dependent h2 {
 	font-size: 32px;
 	font-weight: 500;
+}
+
+.brand {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	/* تزيد المسافة */
+	padding: 16px 12px;
+	/* Padding داخلي */
+}
+
+.table .row span {
+	padding: 8px 12px;
+}
+
+.table .row.head span {
+	padding: 12px 12px;
 }
 
 
