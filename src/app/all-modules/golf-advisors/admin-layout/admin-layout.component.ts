@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterModule } from "@angular/router";
+import { Router } from "@angular/router";
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -8,6 +8,8 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./admin-layout.component.css']
 })
 export class AdminLayoutComponent implements OnInit {
+
+  showLogoutModal = false;
 
   constructor(
     private authService: AuthService,
@@ -18,9 +20,8 @@ export class AdminLayoutComponent implements OnInit {
   }
 
   onLogout(): void {
+    this.showLogoutModal = false;
     this.authService.logout(); 
     this.router.navigate(['/login']);
   }
-
-
 }
