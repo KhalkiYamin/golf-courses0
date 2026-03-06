@@ -12,7 +12,6 @@ import { LoginComponent } from './login/login.component';
 import { PagesRoutingModule } from './pages-routing.module';
 import { PagesComponent } from './pages.component';
 import { RegisterComponent } from './register/register.component';
-import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { VideoCallComponent } from './video-call/video-call.component';
 import { VoiceCallComponent } from './voice-call/voice-call.component';
 
@@ -28,8 +27,7 @@ import { VoiceCallComponent } from './voice-call/voice-call.component';
     BlankPageComponent,
     LoginComponent,
     RegisterComponent,
-    ForgotPasswordComponent,
-    VerifyEmailComponent
+    ForgotPasswordComponent
   ],
   imports: [
     CommonModule,
