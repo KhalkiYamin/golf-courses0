@@ -9,7 +9,6 @@ import { User } from '../all-modules/models/user';
 export class AdminService {
 
   private adminBaseUrl = 'http://localhost:8081/api/admin';
-  private authBaseUrl = 'http://localhost:8081/api/auth';
 
   constructor(private http: HttpClient) { }
 
@@ -20,6 +19,7 @@ export class AdminService {
     if (token) {
       headers = headers.set('Authorization', 'Bearer ' + token);
     }
+
     return headers;
   }
 
@@ -29,15 +29,34 @@ export class AdminService {
     });
   }
 
+  getAllCoaches(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.adminBaseUrl}/coaches`, {
+      headers: this.getHeaders()
+    });
+  }
+
   approveCoach(id: number): Observable<any> {
-    return this.http.put(`${this.authBaseUrl}/approve-coach/${id}`, null, {
+    return this.http.put(`${this.adminBaseUrl}/coaches/${id}/approve`, {}, {
       headers: this.getHeaders(),
       responseType: 'text'
     });
   }
 
   rejectCoach(id: number): Observable<any> {
-    return this.http.put(`${this.adminBaseUrl}/coaches/${id}/reject`, null, {
+    return this.http.put(`${this.adminBaseUrl}/coaches/${id}/reject`, {}, {
+      headers: this.getHeaders(),
+      responseType: 'text'
+    });
+  }
+
+  getAllUsers(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.adminBaseUrl}/users`, {
+      headers: this.getHeaders()
+    });
+  }
+
+  deleteUser(id: number): Observable<any> {
+    return this.http.delete(`${this.adminBaseUrl}/users/${id}`, {
       headers: this.getHeaders(),
       responseType: 'text'
     });

@@ -6,15 +6,17 @@ import { ComponentsComponent } from './components/components.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { InvoiceViewComponent } from './invoice-view/invoice-view.component';
 import { InvoicesComponent } from './invoices/invoices.component';
-
 import { LoginComponent } from './login/login.component';
 import { PagesComponent } from './pages.component';
 import { RegisterComponent } from './register/register.component';
 import { VideoCallComponent } from './video-call/video-call.component';
 import { VoiceCallComponent } from './voice-call/voice-call.component';
+import { VerifyCodeComponent } from '../verify-code/verify-code.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 const routes: Routes = [
-  { path: '', component: PagesComponent,
+  {
+    path: '', component: PagesComponent,
     children: [
       { path: 'voice-call', component: VoiceCallComponent },
       { path: 'video-call', component: VideoCallComponent },
@@ -25,8 +27,10 @@ const routes: Routes = [
       { path: 'blank-page', component: BlankPageComponent },
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent },
-      { path: 'forgot-password', component: ForgotPasswordComponent }
-    ] 
+      { path: 'forgot-password', component: ForgotPasswordComponent },
+      { path: 'verify-code', component: VerifyCodeComponent },
+      { path: 'reset-password', component: ResetPasswordComponent }
+    ]
   }
 ];
 

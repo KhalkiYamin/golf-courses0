@@ -6,13 +6,13 @@
                 <div class="account-content">
                     <div class="row align-items-center justify-content-center">
                         <div class="col-md-7 col-lg-6 login-left">
-                            <img src="assets/img/login-banner.png" class="img-fluid" alt="Mot de passe oublié">
+                            <img src="assets/img/login-banner.png" class="img-fluid" alt="Vérification du code">
                         </div>
 
                         <div class="col-md-12 col-lg-6 login-right">
                             <div class="login-header">
-                                <h3>Mot de passe oublié ?</h3>
-                                <p>Entrez votre email pour recevoir un code de réinitialisation</p>
+                                <h3>Vérification du code</h3>
+                                <p>Entrez l’email et le code reçu par email</p>
                             </div>
 
                             <form (ngSubmit)="submit()" novalidate>
@@ -20,6 +20,12 @@
                                     <input type="email" class="form-control floating" [(ngModel)]="email" name="email"
                                         required>
                                     <label class="focus-label">Email</label>
+                                </div>
+
+                                <div class="form-group form-focus">
+                                    <input type="text" class="form-control floating" [(ngModel)]="code" name="code"
+                                        required>
+                                    <label class="focus-label">Code</label>
                                 </div>
 
                                 <div *ngIf="errorMsg" class="alert alert-danger alert-custom">
@@ -32,14 +38,14 @@
 
                                 <button class="btn btn-primary btn-block btn-lg login-btn" type="submit"
                                     [disabled]="loading">
-                                    <span *ngIf="!loading">Réinitialiser le mot de passe</span>
+                                    <span *ngIf="!loading">Vérifier le code</span>
                                     <span *ngIf="loading">
-                                        <i class="fa fa-spinner fa-spin"></i> Envoi...
+                                        <i class="fa fa-spinner fa-spin"></i> Vérification...
                                     </span>
                                 </button>
 
                                 <div class="text-center forgot-link">
-                                    <a routerLink="/pages/login">Vous vous souvenez de votre mot de passe ?</a>
+                                    <a routerLink="/pages/forgot-password">Renvoyer un code</a>
                                 </div>
                             </form>
                         </div>

@@ -17,12 +17,34 @@ export class AuthService {
     login(loginRequest: { email: string; password: string }): Observable<any> {
         return this.http.post<any>(`${this.baseUrl}/auth/login`, loginRequest)
             .pipe(
-                tap(res => {
+                tap((res: any) => {
                     const token = res.token || res.accessToken;
-                    if (token) localStorage.setItem('token', token);
-                    if (res.role) localStorage.setItem('role', res.role);
+                    if (token) {
+                        localStorage.setItem('token', token);
+                    }
+                    if (res.role) {
+                        localStorage.setItem('role', res.role);
+                    }
                 })
             );
+    }
+
+    forgotPassword(email: string): Observable<string> {
+        return this.http.post(`${this.baseUrl}/auth/forgot-password`, { email }, {
+            responseType: 'text'
+        });
+    }
+
+    verifyResetCode(email: string, code: string): Observable<string> {
+        return this.http.post(`${this.baseUrl}/auth/verify-reset-code`, { email, code }, {
+            responseType: 'text'
+        });
+    }
+
+    resetPassword(email: string, code: string, newPassword: string): Observable<string> {
+        return this.http.post(`${this.baseUrl}/auth/reset-password`, { email, code, newPassword }, {
+            responseType: 'text'
+        });
     }
 
     logout(): void {

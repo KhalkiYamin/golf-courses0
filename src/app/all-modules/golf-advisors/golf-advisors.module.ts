@@ -16,7 +16,7 @@ import { SocialMediaComponent } from './social-media/social-media.component';
 import { AdvisorsChangePasswordComponent } from './advisors-change-password/advisors-change-password.component';
 import { AdminLayoutComponent } from './admin-layout/admin-layout.component';
 import { CategoriesComponent } from './categories/categories.component';
-
+import { UsersComponent } from './users/users.component';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxDropzoneModule } from 'ngx-dropzone';
@@ -37,7 +37,8 @@ import { TagInputModule } from 'ngx-chips';
     SocialMediaComponent,
     AdvisorsChangePasswordComponent,
     AdminLayoutComponent,
-    CategoriesComponent
+    CategoriesComponent,
+    UsersComponent
   ],
   imports: [
     CommonModule,

@@ -29,7 +29,8 @@ export class AppComponent {
           this.active2Route === 'advisors-dashboard' ||
           this.activeRoute === 'batch' ||
           this.active2Route === 'batch' || this.activeRoute === 'categories' ||
-          this.active2Route === 'categories'
+          this.active2Route === 'categories' || this.activeRoute === 'users' ||
+          this.active2Route === 'users'
 
         ) {
           this.showHeader = false;

@@ -6,7 +6,6 @@ import { AdvisorsProfileSettingsComponent } from './advisors-profile-settings/ad
 import { AdvisorsRegisterComponent } from './advisors-register/advisors-register.component';
 import { BatchComponent } from './batch/batch.component';
 import { ChatAdvisorComponent } from './chat-advisor/chat-advisor.component';
-import { GolfAdvisorsComponent } from './golf-advisors.component';
 import { GolferProfileComponent } from './golfer-profile/golfer-profile.component';
 import { MyGolfersComponent } from './my-golfers/my-golfers.component';
 import { ReviewsComponent } from './reviews/reviews.component';
@@ -15,6 +14,7 @@ import { SocialMediaComponent } from './social-media/social-media.component';
 import { AuthGuard } from 'src/app/guards/auth.guards';
 import { AdminLayoutComponent } from './admin-layout/admin-layout.component';
 import { CategoriesComponent } from './categories/categories.component';
+import { UsersComponent } from './users/users.component';
 
 const routes: Routes = [
   {
@@ -33,7 +33,8 @@ const routes: Routes = [
       { path: 'advisors-register', component: AdvisorsRegisterComponent },
       { path: 'social-media', component: SocialMediaComponent },
       { path: 'advisors-change-password', component: AdvisorsChangePasswordComponent },
-      { path: 'categories', component: CategoriesComponent }
+      { path: 'categories', component: CategoriesComponent },
+      { path: 'users', component: UsersComponent }
     ]
   }
 ];

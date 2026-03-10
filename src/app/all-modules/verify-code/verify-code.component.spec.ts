@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BatchComponent } from './batch.component';
+import { VerifyCodeComponent } from './verify-code.component';
 
-describe('BatchComponent', () => {
-  let component: BatchComponent;
-  let fixture: ComponentFixture<BatchComponent>;
+describe('VerifyCodeComponent', () => {
+  let component: VerifyCodeComponent;
+  let fixture: ComponentFixture<VerifyCodeComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BatchComponent ]
+      declarations: [ VerifyCodeComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BatchComponent);
+    fixture = TestBed.createComponent(VerifyCodeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
