@@ -26,6 +26,9 @@ export class UsersComponent implements OnInit {
     successMessage = '';
 
     newUser: AdminUser = this.createEmptyUser();
+    sportName = '';
+    niveau = '';
+    specialite = '';
 
     constructor(private adminUserService: AdminUserService) { }
 
@@ -42,7 +45,9 @@ export class UsersComponent implements OnInit {
             telephone: '',
             role: 'ATHLETE',
             specialite: '',
-            sport: '',
+            sport: null,
+            niveau: '',
+            categorie: '',
             statut: 'VALIDÉ',
             enabled: true
         };
@@ -71,7 +76,7 @@ export class UsersComponent implements OnInit {
 
     get filteredAthletes(): AdminUser[] {
         return this.athletes.filter(user =>
-            (`${user.nom} ${user.prenom} ${user.email} ${user.telephone || ''}`)
+            (`${user.nom} ${user.prenom} ${user.email} ${user.telephone || ''} ${user.sport?.title || ''} ${user.niveau || ''}`)
                 .toLowerCase()
                 .includes(this.searchTerm.toLowerCase())
         );
@@ -129,6 +134,9 @@ export class UsersComponent implements OnInit {
 
     addUser(): void {
         this.newUser = this.createEmptyUser();
+        this.sportName = '';
+        this.niveau = '';
+        this.specialite = '';
         this.showAddModal = true;
     }
 
@@ -147,8 +155,10 @@ export class UsersComponent implements OnInit {
             id: newId,
             statut: this.newUser.role === 'COACH' ? 'EN ATTENTE' : 'VALIDÉ',
             enabled: true,
-            specialite: this.newUser.role === 'COACH' ? this.newUser.specialite : null,
-            sport: this.newUser.role === 'ATHLETE' ? this.newUser.sport : null
+            specialite: this.newUser.role === 'COACH' ? this.specialite : null,
+            sport: this.newUser.role === 'ATHLETE' ? { title: this.sportName } as any : null,
+            niveau: this.newUser.role === 'ATHLETE' ? this.niveau : null,
+            categorie: null
         };
 
         this.users.unshift(userToAdd);

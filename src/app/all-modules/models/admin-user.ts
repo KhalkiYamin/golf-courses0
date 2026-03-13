@@ -1,3 +1,9 @@
+export interface CategoryRef {
+    id?: number;
+    title: string;
+    description?: string;
+}
+
 export interface AdminUser {
     id: number;
     nom: string;
@@ -5,8 +11,10 @@ export interface AdminUser {
     email: string;
     telephone: string;
     role: string;
-    specialite: string | null;
-    sport: string | null;
+    specialite: CategoryRef | string | null;
+    sport: CategoryRef | null;
+    niveau: string | null;
+    categorie: string | null;
     statut: string;
     enabled: boolean;
 }
