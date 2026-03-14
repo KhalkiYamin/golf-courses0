@@ -1,8 +1,11 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { User } from '../all-modules/models/user';
+import { map } from 'rxjs/operators';
 import { DashboardStats } from '../all-modules/models/dashboard-stats';
+import { User } from '../all-modules/models/user';
+
+export type CoachFilter = 'ALL' | 'PENDING' | 'APPROVED';
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +39,24 @@ export class AdminService {
     });
   }
 
+  getApprovedCoaches(): Observable<User[]> {
+    return this.getAllCoaches().pipe(
+      map((coaches) => coaches.filter((coach) => this.getCoachStatus(coach) === 'APPROVED'))
+    );
+  }
+
+  getCoachesByFilter(filter: CoachFilter): Observable<User[]> {
+    if (filter === 'PENDING') {
+      return this.getPendingCoaches();
+    }
+
+    if (filter === 'APPROVED') {
+      return this.getApprovedCoaches();
+    }
+
+    return this.getAllCoaches();
+  }
+
   approveCoach(id: number): Observable<any> {
     return this.http.put(`${this.adminBaseUrl}/coaches/${id}/approve`, {}, {
       headers: this.getHeaders(),
@@ -67,5 +88,13 @@ export class AdminService {
     return this.http.get<DashboardStats>(`${this.adminBaseUrl}/dashboard`, {
       headers: this.getHeaders()
     });
+  }
+
+  private getCoachStatus(coach: User): 'PENDING' | 'APPROVED' {
+    if (coach.enabled === true || coach.adminApproved === true) {
+      return 'APPROVED';
+    }
+
+    return 'PENDING';
   }
 }

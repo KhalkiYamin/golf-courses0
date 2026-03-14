@@ -71,6 +71,9 @@
     transition: all 0.2s ease;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
     user-select: none;
+    appearance: none;
+    text-align: center;
+    outline: none;
 }
 
 .filter-tab:hover {
@@ -148,4 +151,9 @@
 
 .tab-rejected.active {
     background: linear-gradient(135deg, #bd2130, #dc3545);
+}
+
+.filter-tab:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.2);
 }
