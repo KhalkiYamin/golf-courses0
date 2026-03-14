@@ -1,7 +1,7 @@
-export interface CategoryRef {
+export interface UserCategory {
     id?: number;
     title: string;
-    description?: string;
+    description: string;
 }
 
 export interface AdminUser {
@@ -11,10 +11,16 @@ export interface AdminUser {
     email: string;
     telephone: string;
     role: string;
-    specialite: CategoryRef | string | null;
-    sport: CategoryRef | null;
+
+    specialite: UserCategory | string | null;
+    sport: UserCategory | null;
+
     niveau: string | null;
     categorie: string | null;
     statut: string;
     enabled: boolean;
+
+    experience?: number | null;
+    emailVerified?: boolean;
+    adminApproved?: boolean;
 }

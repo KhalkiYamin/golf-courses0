@@ -11,13 +11,8 @@
             </div>
 
             <div class="users-actions">
-                <input
-                    type="text"
-                    class="search-input"
-                    placeholder="Recherche..."
-                    [(ngModel)]="searchTerm"
-                    name="searchTerm"
-                >
+                <input type="text" class="search-input" placeholder="Recherche..." [(ngModel)]="searchTerm"
+                    name="searchTerm">
 
                 <button class="add-btn" (click)="addUser()">
                     + Ajouter
@@ -26,29 +21,16 @@
         </div>
 
         <div class="users-filters">
-            <button
-                class="tab-btn"
-                [class.active]="selectedTab === 'ATHLETE'"
-                (click)="switchTab('ATHLETE')"
-            >
+            <button class="tab-btn" [class.active]="selectedTab === 'ATHLETE'" (click)="switchTab('ATHLETE')">
                 Athlètes
             </button>
 
-            <button
-                class="tab-btn"
-                [class.active]="selectedTab === 'COACH'"
-                (click)="switchTab('COACH')"
-            >
+            <button class="tab-btn" [class.active]="selectedTab === 'COACH'" (click)="switchTab('COACH')">
                 Coachs
             </button>
 
-            <select
-                *ngIf="selectedTab === 'COACH'"
-                class="filter-select"
-                [(ngModel)]="coachFilter"
-                (change)="setCoachFilter(coachFilter)"
-                name="coachFilter"
-            >
+            <select *ngIf="selectedTab === 'COACH'" class="filter-select" [(ngModel)]="coachFilter"
+                (change)="setCoachFilter(coachFilter)" name="coachFilter">
                 <option value="TOUS">Tous</option>
                 <option value="VALIDÉ">Validé</option>
                 <option value="EN ATTENTE">En attente</option>
@@ -84,27 +66,18 @@
                         </td>
 
                         <td>
-                            <span
-                                class="status-badge"
-                                [class.pending]="getUserStatus(user) === 'EN ATTENTE'"
-                            >
+                            <span class="status-badge" [class.pending]="getUserStatus(user) === 'EN ATTENTE'">
                                 {{ getUserStatus(user) }}
                             </span>
                         </td>
 
                         <td class="action-buttons">
-                            <button
-                                *ngIf="user.role === 'COACH' && getUserStatus(user) === 'EN ATTENTE'"
-                                class="edit-btn"
-                                (click)="validateCoach(user); $event.stopPropagation()"
-                            >
+                            <button *ngIf="user.role === 'COACH' && getUserStatus(user) === 'EN ATTENTE'"
+                                class="edit-btn" (click)="validateCoach(user); $event.stopPropagation()">
                                 Valider
                             </button>
 
-                            <button
-                                class="delete-btn"
-                                (click)="confirmDelete(user); $event.stopPropagation()"
-                            >
+                            <button class="delete-btn" (click)="confirmDelete(user); $event.stopPropagation()">
                                 Supprimer
                             </button>
                         </td>
@@ -114,11 +87,8 @@
         </div>
 
         <div class="pagination-box">
-            <button
-                class="page-btn"
-                *ngFor="let p of [].constructor(totalPages); let i = index"
-                (click)="goToPage(i + 1)"
-            >
+            <button class="page-btn" *ngFor="let p of [].constructor(totalPages); let i = index"
+                (click)="goToPage(i + 1)">
                 {{ i + 1 }}
             </button>
         </div>
