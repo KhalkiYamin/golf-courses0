@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AdminUser } from '../../models/admin-user';
 import { AdminUserService } from 'src/app/services/admin-user.service';
+import { CategoryService } from 'src/app/services/category.service';
+import { AdminUser } from '../../models/admin-user';
+import { Category } from '../../models/category';
 
 @Component({
     selector: 'app-users',
@@ -25,15 +27,36 @@ export class UsersComponent implements OnInit {
     showAddModal = false;
     successMessage = '';
 
-    newUser: AdminUser = this.createEmptyUser();
-    sportName = '';
-    niveau = '';
-    specialite = '';
+    categories: Category[] = [];
 
-    constructor(private adminUserService: AdminUserService) { }
+    newUser: AdminUser = this.createEmptyUser();
+    password = '';
+    sportId: number | null = null;
+    specialiteId: number | null = null;
+    experience: number | null = null;
+    niveau = '';
+
+    niveauOptions: string[] = ['DEBUTANT', 'INTERMEDIAIRE', 'CONFIRME', 'PROFESSIONNEL'];
+
+    constructor(
+        private adminUserService: AdminUserService,
+        private categoryService: CategoryService
+    ) { }
 
     ngOnInit(): void {
         this.loadUsers();
+        this.loadCategories();
+    }
+
+    loadCategories(): void {
+        this.categoryService.getAllCategories().subscribe({
+            next: (data: Category[]) => {
+                this.categories = data;
+            },
+            error: (err: any) => {
+                console.error('Erreur chargement catégories', err);
+            }
+        });
     }
 
     createEmptyUser(): AdminUser {
@@ -134,10 +157,22 @@ export class UsersComponent implements OnInit {
 
     addUser(): void {
         this.newUser = this.createEmptyUser();
-        this.sportName = '';
+        this.password = '';
+        this.sportId = null;
+        this.specialiteId = null;
+        this.experience = null;
         this.niveau = '';
-        this.specialite = '';
         this.showAddModal = true;
+    }
+
+    onRoleChange(): void {
+        if (this.newUser.role === 'ATHLETE') {
+            this.specialiteId = null;
+            this.experience = null;
+        } else {
+            this.sportId = null;
+            this.niveau = '';
+        }
     }
 
     closeModal(): void {
@@ -145,30 +180,62 @@ export class UsersComponent implements OnInit {
     }
 
     saveUser(): void {
-        const newId =
-            this.users.length > 0
-                ? Math.max(...this.users.map(u => u.id)) + 1
-                : 1;
+        if (!this.newUser.nom || !this.newUser.prenom || !this.newUser.email || !this.newUser.role) {
+            alert('Veuillez remplir les champs obligatoires.');
+            return;
+        }
 
-        const userToAdd: AdminUser = {
-            ...this.newUser,
-            id: newId,
-            statut: this.newUser.role === 'COACH' ? 'EN ATTENTE' : 'VALIDÉ',
+        if (!this.password || this.password.length < 6) {
+            alert('Le mot de passe est obligatoire (minimum 6 caractères).');
+            return;
+        }
+
+        if (this.newUser.role === 'ATHLETE' && (!this.sportId || !this.niveau)) {
+            alert('Veuillez sélectionner un sport et un niveau pour l\'athlète.');
+            return;
+        }
+
+        if (this.newUser.role === 'COACH' && !this.specialiteId) {
+            alert('Veuillez renseigner la spécialité du coach.');
+            return;
+        }
+
+        const payload: any = {
+            nom: this.newUser.nom,
+            prenom: this.newUser.prenom,
+            email: this.newUser.email,
+            telephone: this.newUser.telephone,
+            password: this.password,
+            role: this.newUser.role,
             enabled: true,
-            specialite: this.newUser.role === 'COACH' ? this.specialite : null,
-            sport: this.newUser.role === 'ATHLETE' ? { title: this.sportName } as any : null,
-            niveau: this.newUser.role === 'ATHLETE' ? this.niveau : null,
-            categorie: null
+            adminApproved: true
         };
 
-        this.users.unshift(userToAdd);
-        this.refreshLists();
-        this.showAddModal = false;
-        this.successMessage = 'Utilisateur ajouté avec succès';
+        if (this.newUser.role === 'ATHLETE') {
+            payload.sportId = this.sportId;
+            payload.niveau = this.niveau;
+        }
 
-        setTimeout(() => {
-            this.successMessage = '';
-        }, 3000);
+        if (this.newUser.role === 'COACH') {
+            payload.specialiteId = this.specialiteId;
+            payload.experience = this.experience ?? 0;
+        }
+
+        this.adminUserService.addUser(payload).subscribe({
+            next: () => {
+                this.showAddModal = false;
+                this.successMessage = 'Utilisateur ajouté avec succès';
+                this.loadUsers();
+
+                setTimeout(() => {
+                    this.successMessage = '';
+                }, 3000);
+            },
+            error: (err) => {
+                console.error('Erreur ajout utilisateur', err);
+                alert(err?.error?.message || 'Erreur lors de l\'ajout utilisateur.');
+            }
+        });
     }
 
     confirmDelete(user: AdminUser): void {

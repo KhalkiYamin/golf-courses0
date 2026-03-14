@@ -132,20 +132,46 @@
         <input class="form-control mb-2" placeholder="Nom" [(ngModel)]="newUser.nom" name="nom">
         <input class="form-control mb-2" placeholder="Prénom" [(ngModel)]="newUser.prenom" name="prenom">
         <input class="form-control mb-2" placeholder="Email" [(ngModel)]="newUser.email" name="email">
+        <input type="password" class="form-control mb-2" placeholder="Mot de passe" [(ngModel)]="password" name="password">
         <input class="form-control mb-2" placeholder="Téléphone" [(ngModel)]="newUser.telephone" name="telephone">
 
-        <select class="form-control mb-2" [(ngModel)]="newUser.role" name="role">
+        <select class="form-control mb-2" [(ngModel)]="newUser.role" name="role" (change)="onRoleChange()">
             <option value="ATHLETE">Athlète</option>
             <option value="COACH">Coach</option>
         </select>
 
         <div *ngIf="newUser.role === 'ATHLETE'">
-            <input class="form-control mb-2" placeholder="Sport" [(ngModel)]="sportName" name="sportName">
-            <input class="form-control mb-2" placeholder="Niveau" [(ngModel)]="niveau" name="niveau">
+            <select class="form-control mb-2" [(ngModel)]="sportId" name="sportId">
+                <option [ngValue]="null">Choisir un sport</option>
+                <option *ngFor="let c of categories" [ngValue]="c.id">
+                    {{ c.title }}
+                </option>
+            </select>
+
+            <select class="form-control mb-2" [(ngModel)]="niveau" name="niveau">
+                <option value="" disabled>Choisir un niveau</option>
+                <option *ngFor="let level of niveauOptions" [value]="level">
+                    {{ level }}
+                </option>
+            </select>
         </div>
 
         <div *ngIf="newUser.role === 'COACH'">
-            <input class="form-control mb-2" placeholder="Spécialité" [(ngModel)]="specialite" name="specialite">
+            <select class="form-control mb-2" [(ngModel)]="specialiteId" name="specialiteId">
+                <option [ngValue]="null">Choisir une spécialité</option>
+                <option *ngFor="let c of categories" [ngValue]="c.id">
+                    {{ c.title }}
+                </option>
+            </select>
+
+            <input
+                type="number"
+                class="form-control mb-2"
+                placeholder="Années d'expérience"
+                [(ngModel)]="experience"
+                name="experience"
+                min="0"
+            >
         </div>
 
         <div class="modal-actions">

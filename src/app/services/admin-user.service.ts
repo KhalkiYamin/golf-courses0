@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AdminUser } from '../all-modules/models/admin-user';
 
@@ -37,6 +37,12 @@ export class AdminUserService {
 
     getCoaches(): Observable<AdminUser[]> {
         return this.http.get<AdminUser[]>(`${this.apiUrl}/coaches`, {
+            headers: this.getHeaders()
+        });
+    }
+
+    addUser(payload: any): Observable<AdminUser> {
+        return this.http.post<AdminUser>(`${this.apiUrl}/users`, payload, {
             headers: this.getHeaders()
         });
     }
