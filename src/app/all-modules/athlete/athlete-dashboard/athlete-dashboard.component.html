@@ -14,6 +14,10 @@
                 Spécialité: {{ athleteSpecialite }}
             </p>
         </div>
+
+        <a class="cart-payment-btn" routerLink="/golfers/cart">
+            Aller au panier et paiement
+        </a>
     </div>
 
     <div *ngIf="successMessage" class="success-alert">
@@ -32,6 +36,61 @@
             </div>
             <small class="stat-label">{{ stat.label }}</small>
             <h3 class="stat-value">{{ stat.value }}</h3>
+        </div>
+    </div>
+
+    <div class="dashboard-card latest-session-card">
+        <div class="card-header">
+            <div>
+                <h5>🔥 Your Latest Session</h5>
+                <p>Based on your last activity</p>
+            </div>
+        </div>
+
+        <div *ngIf="lastSessionLoading" class="loading-state">
+            Chargement...
+        </div>
+
+        <div *ngIf="!lastSessionLoading && !lastSession" class="empty-state">
+            <div class="empty-icon">🏅</div>
+            <h4>Aucune séance récente</h4>
+            <p>Votre dernière séance apparaîtra ici automatiquement.</p>
+        </div>
+
+        <div *ngIf="lastSession" class="latest-session-content">
+            <div class="latest-session-main">
+                <div class="latest-session-icon">
+                    {{ getSessionIcon(lastSession.theme) }}
+                </div>
+
+                <div class="latest-session-info">
+                    <h4>{{ lastSession.theme }}</h4>
+                    <p>👨‍🏫 {{ lastSession.coachNom || 'Coach non défini' }}</p>
+                    <p>🏅 {{ lastSession.sportTitle || 'Sport non défini' }}</p>
+                </div>
+            </div>
+
+            <div class="latest-session-meta">
+                <div class="latest-meta-item">
+                    <span>Date</span>
+                    <strong>{{ lastSession.dateSeance || '-' }}</strong>
+                </div>
+
+                <div class="latest-meta-item">
+                    <span>Heure</span>
+                    <strong>{{ lastSession.heureSeance || '-' }}</strong>
+                </div>
+
+                <div class="latest-meta-item">
+                    <span>Durée</span>
+                    <strong>{{ lastSession.duree || '-' }}</strong>
+                </div>
+
+                <div class="latest-meta-item">
+                    <span>Niveau</span>
+                    <strong>{{ lastSession.niveau || '-' }}</strong>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -86,10 +145,10 @@
 
                     <div class="session-right athlete-actions">
                         <span class="reservation-badge" [ngClass]="
-                                isSessionCancelled(session)
-                                    ? 'cancelled-badge'
-                                    : (session.complet ? 'full-badge' : 'non_reservee')
-                            ">
+                    isSessionCancelled(session)
+                      ? 'cancelled-badge'
+                      : (session.complet ? 'full-badge' : 'non_reservee')
+                  ">
                             {{
                             isSessionCancelled(session)
                             ? 'ANNULÉE'
@@ -212,10 +271,10 @@
 
                 <div class="session-right athlete-actions">
                     <span class="reservation-badge" [ngClass]="
-                            isSessionCancelled(item)
-                                ? 'cancelled-badge'
-                                : item.statut.toLowerCase()
-                        ">
+                  isSessionCancelled(item)
+                    ? 'cancelled-badge'
+                    : item.statut.toLowerCase()
+                ">
                         {{
                         isSessionCancelled(item)
                         ? 'ANNULÉE'

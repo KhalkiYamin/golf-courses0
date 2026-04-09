@@ -1,0 +1,141 @@
+<div class="checkout-shell">
+    <div class="container py-4">
+
+        <div class="checkout-header">
+            <h2>Panier</h2>
+            <p>Verifiez votre derniere seance et votre coach avant de continuer.</p>
+        </div>
+
+        <nav class="checkout-steps mb-4" aria-label="Etapes de paiement">
+            <button type="button" *ngFor="let step of steps; let i = index" class="step-item"
+                [ngClass]="[step.status, !step.clickable ? 'locked' : '']" [disabled]="!step.clickable"
+                (click)="navigateToStep(step)">
+                <span class="step-dot">{{ i + 1 }}</span>
+                <span class="step-label">{{ step.name }}</span>
+            </button>
+        </nav>
+
+        <div class="card coach-selector-card mb-4" *ngIf="coachCards.length > 0">
+            <div class="card-body">
+                <div class="coach-selector-header">
+                    <h4>Votre coach recent</h4>
+                    <p>Selon votre derniere activite.</p>
+                </div>
+
+                <div class="coach-cards-grid">
+                    <article class="coach-card" *ngFor="let coach of coachCards"
+                        [class.selected]="isCoachSelected(coach)">
+                        <div class="coach-card-top">
+                            <img *ngIf="coach.imageUrl" [src]="coach.imageUrl" [alt]="coach.fullName"
+                                class="coach-avatar" (error)="handleCoachImageError($event, coach)">
+                            <div *ngIf="!coach.imageUrl" class="coach-avatar-fallback">
+                                {{ getCoachInitials(coach.fullName) }}
+                            </div>
+
+                            <div class="coach-meta">
+                                <h5>{{ coach.fullName }}</h5>
+                                <p class="coach-specialty">{{ coach.specialty }}</p>
+                                <span class="coach-level">{{ coach.level }}</span>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn choose-coach-btn" [class.active]="isCoachSelected(coach)"
+                            [disabled]="isCoachSelected(coach)" (click)="chooseCoach(coach)">
+                            {{ isCoachSelected(coach) ? 'Coach confirme' : 'Selectionner ce coach' }}
+                        </button>
+                    </article>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="card session-card">
+                    <div class="card-body">
+                        <h4 class="card-title">Votre derniere seance</h4>
+
+                        <div class="session-details">
+                            <div class="session-row">
+                                <span class="label">Derniere seance</span>
+                                <span class="value">
+                                    {{
+                                    loadingLastSession
+                                    ? 'Chargement de la derniere seance...'
+                                    : (order.title || 'Aucune seance precedente')
+                                    }}
+                                </span>
+                            </div>
+
+                            <div class="session-row">
+                                <span class="label">Dernier coach</span>
+                                <span class="value">
+                                    {{
+                                    loadingLastSession
+                                    ? 'Chargement du coach...'
+                                    : (order.coach || 'Aucun coach precedent')
+                                    }}
+                                </span>
+                            </div>
+
+                            <div class="session-row">
+                                <span class="label">Duree</span>
+                                <span class="value">
+                                    {{
+                                    loadingLastSession
+                                    ? 'Chargement de la duree...'
+                                    : (order.duration || 'Non precisee')
+                                    }}
+                                </span>
+                            </div>
+
+                            <div class="session-row">
+                                <span class="label">Prix unitaire</span>
+                                <span class="value">{{ unitPrice | number:'1.2-2' }} TND</span>
+                            </div>
+                        </div>
+
+                        <div class="quantity-wrapper">
+                            <span class="quantity-label">Quantite</span>
+
+                            <div class="qty-box">
+                                <button type="button" class="btn qty-btn" (click)="decreaseQuantity()">−</button>
+                                <span class="qty-value">{{ order.quantity }}</span>
+                                <button type="button" class="btn qty-btn" (click)="increaseQuantity()">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card summary-card">
+                    <div class="card-body">
+                        <h5>Resume de commande</h5>
+
+                        <ul class="summary-list">
+                            <li>
+                                <span>Sous-total</span>
+                                <strong>{{ order.subtotal | number:'1.2-2' }} TND</strong>
+                            </li>
+
+                            <li *ngIf="order.discount && order.discount > 0">
+                                <span>Remise</span>
+                                <strong>- {{ order.discount | number:'1.2-2' }} TND</strong>
+                            </li>
+                        </ul>
+
+                        <div class="total-line">
+                            <span>Total</span>
+                            <strong>{{ total | number:'1.2-2' }} TND</strong>
+                        </div>
+
+                        <button type="button" class="btn btn-primary continue-btn" (click)="proceedToInformation()">
+                            Continuer vers les informations
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

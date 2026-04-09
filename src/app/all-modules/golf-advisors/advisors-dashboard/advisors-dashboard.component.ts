@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { AdminService } from 'src/app/services/admin.service';
+import { PaymentRecord, PaymentService } from 'src/app/services/payment.service';
 import { User } from '../../models/user';
 import { DashboardStats } from '../../models/dashboard-stats';
 
@@ -15,6 +16,7 @@ export class AdvisorsDashboardComponent implements OnInit {
   pendingCoaches: User[] = [];
   isLoading: boolean = false;
   isDashboardLoading: boolean = false;
+  paymentTotalAmount = 0;
 
   showModal: boolean = false;
   modalAction: 'accept' | 'reject' = 'accept';
@@ -35,12 +37,22 @@ export class AdvisorsDashboardComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private adminService: AdminService
+    private adminService: AdminService,
+    private paymentService: PaymentService
   ) { }
 
   ngOnInit(): void {
     this.loadPendingCoaches();
     this.loadDashboardStats();
+    this.loadPaymentsTotal();
+  }
+
+  private getPaymentAmount(payment: PaymentRecord): number {
+    if (payment.status !== 'PAID') {
+      return 0;
+    }
+
+    return Number(payment.amount || 0);
   }
 
   loadPendingCoaches(): void {
@@ -71,6 +83,21 @@ export class AdvisorsDashboardComponent implements OnInit {
     });
   }
 
+  loadPaymentsTotal(): void {
+    this.paymentService.getPayments().subscribe({
+      next: (payments: PaymentRecord[]) => {
+        const totalPayments = payments.reduce((sum: number, payment: PaymentRecord) => {
+          return sum + this.getPaymentAmount(payment);
+        }, 0);
+        this.paymentTotalAmount = parseFloat(totalPayments.toFixed(2));
+      },
+      error: (err: any) => {
+        console.error('Erreur lors du chargement des paiements dashboard', err);
+        this.paymentTotalAmount = 0;
+      }
+    });
+  }
+
   openModal(action: 'accept' | 'reject', coach: User): void {
     this.modalAction = action;
     this.selectedCoach = coach;
@@ -90,6 +117,7 @@ export class AdvisorsDashboardComponent implements OnInit {
         next: () => {
           this.loadPendingCoaches();
           this.loadDashboardStats();
+          this.loadPaymentsTotal();
           this.closeModal();
         },
         error: (err: any) => {
@@ -102,6 +130,7 @@ export class AdvisorsDashboardComponent implements OnInit {
         next: () => {
           this.loadPendingCoaches();
           this.loadDashboardStats();
+          this.loadPaymentsTotal();
           this.closeModal();
         },
         error: (err: any) => {

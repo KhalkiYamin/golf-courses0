@@ -1,0 +1,457 @@
+.checkout-shell {
+    min-height: 100vh;
+    background:
+        linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(30, 41, 59, 0.94)),
+        url('/assets/img/bg/pattern-bg.jpg') center/cover no-repeat;
+    color: #f8fafc;
+    padding-bottom: 40px;
+}
+
+.checkout-header {
+    margin-bottom: 24px;
+}
+
+.checkout-header h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 6px;
+    color: #ffffff;
+}
+
+.checkout-header p {
+    margin: 0;
+    color: rgba(226, 232, 240, 0.85);
+    font-size: 0.98rem;
+}
+
+.checkout-steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.step-item {
+    border: none;
+    background: rgba(255, 255, 255, 0.08);
+    color: #e2e8f0;
+    border-radius: 999px;
+    padding: 10px 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+
+.step-item .step-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.14);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.step-item.active {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: #fff;
+    box-shadow: 0 10px 30px rgba(37, 99, 235, 0.35);
+}
+
+.step-item.completed {
+    background: rgba(16, 185, 129, 0.18);
+    color: #d1fae5;
+}
+
+.step-item.locked,
+.step-item:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.card {
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    border-radius: 22px;
+    box-shadow: 0 20px 60px rgba(15, 23, 42, 0.25);
+}
+
+.coach-selector-card .card-body,
+.session-card .card-body,
+.summary-card .card-body {
+    padding: 24px;
+}
+
+.coach-selector-header {
+    margin-bottom: 20px;
+}
+
+.coach-selector-header h4 {
+    margin-bottom: 6px;
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #fff;
+}
+
+.coach-selector-header p {
+    margin: 0;
+    color: rgba(226, 232, 240, 0.8);
+}
+
+.coach-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+}
+
+.coach-card {
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 20px;
+    padding: 18px;
+    background: rgba(15, 23, 42, 0.5);
+    transition: all 0.28s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.coach-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(96, 165, 250, 0.45);
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.32);
+}
+
+.coach-card.selected {
+    border-color: #60a5fa;
+    box-shadow: 0 0 0 1px rgba(96, 165, 250, 0.35), 0 20px 40px rgba(37, 99, 235, 0.25);
+    background: linear-gradient(180deg, rgba(30, 41, 59, 0.92), rgba(15, 23, 42, 0.92));
+}
+
+.coach-card-top {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.coach-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255, 255, 255, 0.14);
+    background: #e2e8f0;
+}
+
+.coach-avatar-fallback {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.14);
+    background: linear-gradient(135deg, #334155, #1e293b);
+    color: #e2e8f0;
+    display: grid;
+    place-items: center;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.coach-meta h5 {
+    margin: 0 0 4px;
+    color: #fff;
+    font-size: 1.05rem;
+    font-weight: 800;
+}
+
+.coach-specialty {
+    margin: 0 0 8px;
+    color: rgba(191, 219, 254, 0.92);
+    font-size: 0.92rem;
+}
+
+.coach-level {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(59, 130, 246, 0.14);
+    color: #bfdbfe;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.choose-coach-btn {
+    width: 100%;
+    border-radius: 14px;
+    padding: 10px 14px;
+    font-weight: 700;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    transition: all 0.25s ease;
+}
+
+.choose-coach-btn:hover {
+    background: rgba(96, 165, 250, 0.18);
+}
+
+.choose-coach-btn.active {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: #fff;
+    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.3);
+}
+
+.choose-coach-btn:disabled {
+    cursor: default;
+    opacity: 0.95;
+}
+
+.card-title {
+    color: #fff;
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+}
+
+.session-details {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.session-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+.session-row .label {
+    color: rgba(226, 232, 240, 0.8);
+    font-weight: 600;
+}
+
+.session-row .value {
+    color: #fff;
+    font-weight: 700;
+    text-align: right;
+}
+
+.quantity-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 10px;
+}
+
+.quantity-label {
+    color: rgba(226, 232, 240, 0.86);
+    font-weight: 700;
+}
+
+.qty-box {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 8px 10px;
+}
+
+.qty-btn {
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 12px;
+    background: rgba(37, 99, 235, 0.18);
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
+.qty-btn:hover {
+    background: rgba(37, 99, 235, 0.32);
+}
+
+.qty-value {
+    min-width: 22px;
+    text-align: center;
+    color: #fff;
+    font-weight: 800;
+}
+
+.summary-card h5 {
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 800;
+    margin-bottom: 18px;
+}
+
+.summary-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 18px;
+}
+
+.summary-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: rgba(226, 232, 240, 0.9);
+    margin-bottom: 12px;
+}
+
+.summary-list strong {
+    color: #fff;
+}
+
+.total-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 14px;
+    margin-top: 8px;
+    border-top: 1px solid rgba(148, 163, 184, 0.18);
+    color: #fff;
+    font-size: 1.08rem;
+    font-weight: 800;
+}
+
+.continue-btn {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px 16px;
+    border-radius: 14px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    border: none;
+    box-shadow: 0 14px 32px rgba(37, 99, 235, 0.28);
+}
+
+.continue-btn:hover {
+    background: linear-gradient(135deg, #1d4ed8, #1e40af);
+}
+
+@media (max-width: 991px) {
+    .session-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .session-row .value {
+        text-align: left;
+    }
+}
+
+@media (max-width: 767px) {
+    .checkout-header h2 {
+        font-size: 1.6rem;
+    }
+
+    .coach-card-top {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .coach-avatar {
+        width: 64px;
+        height: 64px;
+    }
+
+    .quantity-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+.coach-avatar {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(66, 183, 247, 0.22);
+}
+
+.coach-meta h5 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 800;
+    color: #143a56;
+}
+
+.coach-specialty {
+    margin: 3px 0 6px;
+    font-size: 13px;
+    color: #44718f;
+}
+
+.coach-level {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    background: rgba(66, 183, 247, 0.12);
+    color: #1f6b98;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 10px;
+}
+
+.choose-coach-btn {
+    border: none;
+    border-radius: 12px;
+    background: rgba(66, 183, 247, 0.12);
+    color: #1676b3;
+    font-size: 14px;
+    font-weight: 800;
+    padding: 10px 14px;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.choose-coach-btn:hover {
+    background: #42b7f7;
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.choose-coach-btn.active {
+    background: linear-gradient(135deg, #42b7f7, #269be4);
+    color: #ffffff;
+    box-shadow: 0 10px 18px rgba(38, 155, 228, 0.26);
+}
+
+@media (max-width: 768px) {
+    .checkout-shell h2 {
+        font-size: 30px;
+    }
+
+    .checkout-steps {
+        gap: 6px;
+    }
+
+    .step-label {
+        font-size: 12px;
+    }
+
+    .d-flex.justify-content-end {
+        justify-content: stretch !important;
+    }
+
+    .d-flex.justify-content-end .btn {
+        width: 100%;
+    }
+
+    .coach-cards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .coach-card {
+        padding: 12px;
+    }
+}

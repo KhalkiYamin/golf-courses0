@@ -17,6 +17,7 @@ import { CategoriesComponent } from './categories/categories.component';
 import { UsersComponent } from './users/users.component';
 import { ParametresComponent } from './parametres/parametres.component';
 import { RessourcesSportivesComponent } from './ressources-sportives/ressources-sportives.component';
+import { PaymentsComponent } from './payments/payments.component';
 
 const routes: Routes = [
   {
@@ -37,6 +38,7 @@ const routes: Routes = [
       { path: 'advisors-change-password', component: AdvisorsChangePasswordComponent },
       { path: 'categories', component: CategoriesComponent },
       { path: 'users', component: UsersComponent },
+      { path: 'payments', component: PaymentsComponent },
       { path: 'parametres', component: ParametresComponent },
       { path: 'ressources-sportives', component: RessourcesSportivesComponent },
       { path: '', redirectTo: 'advisors-dashboard', pathMatch: 'full' }

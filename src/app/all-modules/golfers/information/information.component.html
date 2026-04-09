@@ -1,0 +1,78 @@
+<div class="checkout-shell">
+    <div class="container py-4">
+        <div class="checkout-header">
+            <h2>Informations</h2>
+            <p>Completez vos coordonnees avant de passer au paiement.</p>
+        </div>
+
+        <nav class="checkout-steps mb-4" aria-label="Etapes de paiement">
+            <a class="step-item completed" routerLink="/golfers/cart">
+                <span class="step-dot">1</span>
+                <span class="step-label">Panier</span>
+            </a>
+            <div class="step-item active">
+                <span class="step-dot">2</span>
+                <span class="step-label">Informations</span>
+            </div>
+            <div class="step-item muted">
+                <span class="step-dot">3</span>
+                <span class="step-label">Paiement</span>
+            </div>
+            <div class="step-item muted">
+                <span class="step-dot">4</span>
+                <span class="step-label">Confirmation</span>
+            </div>
+        </nav>
+
+        <form class="card info-card" [formGroup]="form" (ngSubmit)="continueToCheckout()">
+            <h4 class="mb-3">Informations personnelles</h4>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label" for="firstName">Prenom</label>
+                    <input id="firstName" class="form-control" type="text" formControlName="firstName" />
+                    <small class="text-danger" *ngIf="form.get('firstName')?.invalid && form.get('firstName')?.touched">
+                        Le prenom est obligatoire.
+                    </small>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label" for="lastName">Nom</label>
+                    <input id="lastName" class="form-control" type="text" formControlName="lastName" />
+                    <small class="text-danger" *ngIf="form.get('lastName')?.invalid && form.get('lastName')?.touched">
+                        Le nom est obligatoire.
+                    </small>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label" for="email">Email</label>
+                    <input id="email" class="form-control" type="email" formControlName="email" />
+                    <small class="text-danger" *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
+                        Entrez une adresse e-mail valide.
+                    </small>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label" for="phone">Telephone</label>
+                    <input id="phone" class="form-control" type="text" formControlName="phone" />
+                    <small class="text-danger" *ngIf="form.get('phone')?.invalid && form.get('phone')?.touched">
+                        Le telephone est obligatoire.
+                    </small>
+                </div>
+            </div>
+
+            <div class="order-summary-card" *ngIf="order">
+                <h5 class="mb-2">Resume de la commande</h5>
+                <p class="mb-1"><strong>Seance :</strong> {{ order.title }}</p>
+                <p class="mb-1"><strong>Coach :</strong> {{ order.coach }}</p>
+                <p class="mb-1"><strong>Duree :</strong> {{ order.duration }}</p>
+                <p class="mb-0"><strong>Total :</strong> {{ order.subtotal | number:'1.2-2' }} TND</p>
+            </div>
+
+            <div class="action-row mt-4">
+                <button class="btn back-btn" type="button" (click)="backToCart()">Retour au panier</button>
+                <button class="btn btn-primary continue-btn" type="submit">Continuer vers le paiement</button>
+            </div>
+        </form>
+    </div>
+</div>

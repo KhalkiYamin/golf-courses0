@@ -55,6 +55,13 @@ export class ReservationSeanceService {
         );
     }
 
+    getSeanceById(id: number): Observable<any> {
+        return this.http.get<any>(
+            `${this.apiUrl}/seances/${id}`,
+            { headers: this.getHeaders() }
+        );
+    }
+
     reserverSeance(seanceId: number, coachId: number): Observable<ReservationSeanceDto> {
         return this.http.post<ReservationSeanceDto>(
             `${this.apiUrl}/seance/${seanceId}?coachId=${coachId}`,
@@ -87,6 +94,12 @@ export class ReservationSeanceService {
             { headers: this.getHeaders() }
         ).pipe(
             map((response) => this.normalizeCollection(response, 'EN_ATTENTE'))
+        );
+    }
+    getLastSessionForAthlete(): Observable<any> {
+        return this.http.get<any>(
+            'http://localhost:8081/api/seances/last-session',
+            { headers: this.getHeaders() }
         );
     }
 

@@ -1,0 +1,553 @@
+/* ============================================================
+	 INVOICE VIEW — Académie de Sportive
+	 Professional, print-ready layout
+	 ============================================================ */
+
+/* ─── Page wrapper ─── */
+.inv-page {
+    background: #f0f2f5;
+    padding: 40px 0 60px;
+    min-height: calc(100vh - 200px);
+}
+
+/* ─── Loading spinner ─── */
+.inv-loading {
+    padding: 80px 0;
+}
+
+.inv-spinner {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #d4e8d8;
+    border-top-color: #1a6e35;
+    border-radius: 50%;
+    animation: inv-spin 0.8s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes inv-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ─── Action bar ─── */
+.inv-actions {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    justify-content: flex-end;
+}
+
+.inv-btn-print,
+.inv-btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 22px;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: none;
+}
+
+.inv-btn-print {
+    background: #1a6e35;
+    color: #fff;
+    box-shadow: 0 3px 10px rgba(26, 110, 53, 0.3);
+}
+
+.inv-btn-print:hover {
+    background: #144f27;
+    color: #fff;
+}
+
+.inv-btn-back {
+    background: #fff;
+    color: #4a5568;
+    border: 1.5px solid #cbd5e0;
+}
+
+.inv-btn-back:hover {
+    background: #f7fafc;
+    color: #2d3748;
+}
+
+/* ─── Card ─── */
+.inv-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.10), 0 1px 6px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}
+
+/* ════════════════════
+	 HEADER
+════════════════════ */
+.inv-header {
+    background: linear-gradient(135deg, #0d3b1e 0%, #1a6e35 100%);
+    color: #fff;
+}
+
+.inv-header-top-accent {
+    height: 5px;
+    background: linear-gradient(90deg, #d4a017, #f5c842, #d4a017);
+}
+
+.inv-header-body {
+    padding: 32px 36px 28px;
+}
+
+/* Brand */
+.inv-brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+
+.inv-logo {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    padding: 6px;
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+    flex-shrink: 0;
+}
+
+.inv-academy-name {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: #fff;
+    line-height: 1.2;
+}
+
+.inv-academy-tagline {
+    font-size: 0.78rem;
+    color: #d4a017;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 2px;
+}
+
+.inv-academy-address {
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.7;
+    margin: 0;
+}
+
+.inv-academy-address i {
+    color: #d4a017;
+}
+
+/* Invoice number / date */
+.inv-label-word {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: #d4a017;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.inv-number-text {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 1px;
+    line-height: 1;
+}
+
+.inv-date-text {
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 6px;
+}
+
+/* Status badge */
+.inv-status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.status-paid {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.status-pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.status-failed {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* ════════════════════
+	 BODY
+════════════════════ */
+.inv-body {
+    padding: 36px;
+}
+
+/* Parties */
+.inv-parties {
+    margin-bottom: 28px;
+}
+
+.party-box {
+    background: #f8fafb;
+    border-radius: 10px;
+    padding: 20px 22px;
+    height: 100%;
+    border-top: 3px solid transparent;
+}
+
+.party-box-left {
+    border-top-color: #1a6e35;
+}
+
+.party-box-right {
+    border-top-color: #d4a017;
+}
+
+.party-type-label {
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #9ca3af;
+    margin-bottom: 6px;
+}
+
+.party-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1a202c;
+    margin-bottom: 8px;
+}
+
+.party-info {
+    font-size: 0.83rem;
+    color: #6b7280;
+    line-height: 1.8;
+    margin: 0;
+}
+
+.party-info i {
+    color: #9ca3af;
+    font-size: 0.75rem;
+}
+
+/* Meta pills row */
+.inv-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 28px;
+}
+
+.inv-meta-pill {
+    background: #f1f5f9;
+    border-radius: 8px;
+    padding: 10px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 140px;
+}
+
+.inv-meta-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #94a3b8;
+}
+
+.inv-meta-value {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #1a202c;
+}
+
+.inv-promo-code {
+    color: #1a6e35;
+    background: #d1fae5;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 0.82rem;
+    font-family: monospace;
+    letter-spacing: 1px;
+}
+
+/* Table */
+.inv-table-wrap {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 28px;
+}
+
+.inv-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+}
+
+.inv-table thead tr {
+    background: linear-gradient(90deg, #0d3b1e, #1a6e35);
+}
+
+.inv-table thead th {
+    padding: 14px 18px;
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    border: none;
+}
+
+.inv-th-desc {
+    text-align: left;
+    width: 50%;
+}
+
+.inv-th-center {
+    text-align: center;
+}
+
+.inv-th-right {
+    text-align: right;
+}
+
+.inv-row td {
+    padding: 18px 18px;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+    font-size: 0.88rem;
+    color: #374151;
+}
+
+.inv-row:last-child td {
+    border-bottom: none;
+}
+
+.inv-row:hover td {
+    background: #f8fffe;
+}
+
+.inv-item-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1a202c;
+    margin-bottom: 4px;
+}
+
+.inv-item-sub {
+    font-size: 0.78rem;
+    color: #94a3b8;
+}
+
+/* Totals */
+.inv-totals {
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 28px;
+}
+
+.inv-total-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 13px 18px;
+    font-size: 0.88rem;
+    color: #4b5563;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.inv-total-row:last-child {
+    border-bottom: none;
+}
+
+.inv-discount-row {
+    background: #f0fdf4;
+}
+
+.inv-discount-amount {
+    color: #059669;
+    font-weight: 700;
+}
+
+.inv-promo-tag {
+    display: inline-block;
+    background: #d1fae5;
+    color: #065f46;
+    border-radius: 4px;
+    padding: 1px 7px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    font-family: monospace;
+    margin-left: 6px;
+    letter-spacing: 1px;
+}
+
+.inv-total-final {
+    background: linear-gradient(90deg, #0d3b1e, #1a6e35);
+    color: #fff !important;
+    font-size: 1rem;
+    font-weight: 800;
+    padding: 16px 18px;
+}
+
+.inv-total-final span {
+    color: #fff;
+}
+
+/* Note */
+.inv-note {
+    background: #eff6ff;
+    border-left: 4px solid #3b82f6;
+    border-radius: 6px;
+    padding: 14px 18px;
+    font-size: 0.83rem;
+    color: #374151;
+    line-height: 1.6;
+}
+
+.inv-note-icon {
+    color: #3b82f6;
+    margin-right: 8px;
+}
+
+/* ════════════════════
+	 FOOTER
+════════════════════ */
+.inv-footer {
+    padding: 20px 36px 24px;
+}
+
+.inv-footer-line {
+    height: 2px;
+    background: linear-gradient(90deg, #d4a017, #1a6e35, #d4a017);
+    border-radius: 2px;
+    margin-bottom: 18px;
+    opacity: 0.6;
+}
+
+.inv-footer-logo {
+    height: 38px;
+    object-fit: contain;
+    opacity: 0.6;
+}
+
+.inv-footer-contact {
+    font-size: 0.78rem;
+    color: #9ca3af;
+    font-weight: 500;
+}
+
+/* ════════════════════
+	 PRINT STYLES
+════════════════════ */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+
+    .inv-page {
+        background: #fff;
+        padding: 0;
+    }
+
+    .inv-card {
+        box-shadow: none;
+        border-radius: 0;
+    }
+
+    .inv-btn-print,
+    .inv-btn-back,
+    .inv-actions {
+        display: none !important;
+    }
+
+    .inv-header-body {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .inv-table thead tr,
+    .inv-total-final {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    body {
+        margin: 0;
+    }
+
+    .content {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .container {
+        max-width: 100% !important;
+    }
+
+    .col-xl-9,
+    .col-lg-10 {
+        max-width: 100% !important;
+        flex: 0 0 100% !important;
+    }
+}
+
+/* ════════════════════
+	 RESPONSIVE
+════════════════════ */
+@media (max-width: 576px) {
+    .inv-header-body {
+        padding: 22px 20px 18px;
+    }
+
+    .inv-body {
+        padding: 22px 16px;
+    }
+
+    .inv-footer {
+        padding: 16px 16px 20px;
+    }
+
+    .inv-number-text {
+        font-size: 1.5rem;
+    }
+
+    .inv-academy-name {
+        font-size: 1.1rem;
+    }
+
+    .inv-meta-row {
+        gap: 8px;
+    }
+
+    .inv-meta-pill {
+        min-width: 120px;
+    }
+}

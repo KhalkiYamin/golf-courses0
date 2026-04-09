@@ -23,6 +23,7 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
 import { TagInputModule } from 'ngx-chips';
 import { ParametresComponent } from './parametres/parametres.component';
 import { RessourcesSportivesComponent } from './ressources-sportives/ressources-sportives.component';
+import { PaymentsComponent } from './payments/payments.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { RessourcesSportivesComponent } from './ressources-sportives/ressources-
     CategoriesComponent,
     UsersComponent,
     ParametresComponent,
-    RessourcesSportivesComponent
+    RessourcesSportivesComponent,
+    PaymentsComponent
   ],
   imports: [
     CommonModule,

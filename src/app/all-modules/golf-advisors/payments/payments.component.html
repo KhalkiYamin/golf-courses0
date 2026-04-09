@@ -1,0 +1,59 @@
+<section class="payments-page">
+    <div class="stats-grid">
+        <article class="stat-card">
+            <p class="stat-label">Total encaissé</p>
+            <h3>{{ totalAmount.toFixed(2) }} TND</h3>
+        </article>
+        <article class="stat-card">
+            <p class="stat-label">Paiements validés</p>
+            <h3>{{ totalPaid }}</h3>
+        </article>
+        <article class="stat-card">
+            <p class="stat-label">Paiements en espèces</p>
+            <h3>{{ totalPendingCash }}</h3>
+        </article>
+    </div>
+
+    <div class="table-card">
+        <div class="table-head">
+            <h2>Paiements récents</h2>
+        </div>
+
+        <div class="empty" *ngIf="!payments.length">
+            Aucun paiement enregistré pour le moment.
+        </div>
+
+        <div class="table-wrap" *ngIf="payments.length">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Date</th>
+                        <th>Séance</th>
+                        <th>Coach</th>
+                        <th>Type</th>
+                        <th>Méthode</th>
+                        <th>Montant</th>
+                        <th>Statut</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let payment of payments">
+                        <td>{{ payment.id }}</td>
+                        <td>{{ asDate(payment.createdAt) | date: 'dd/MM/yyyy HH:mm' }}</td>
+                        <td>{{ payment.title }}</td>
+                        <td>{{ payment.coach }}</td>
+                        <td>{{ payment.paymentType }}</td>
+                        <td>{{ payment.paymentMethod }}</td>
+                        <td>{{ payment.amount.toFixed(2) }} TND</td>
+                        <td>
+                            <span class="status" [class.status--pending]="payment.status === 'PENDING_CASH'">
+                                {{ payment.status === 'PAID' ? 'Payé' : 'En attente (espèces)' }}
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

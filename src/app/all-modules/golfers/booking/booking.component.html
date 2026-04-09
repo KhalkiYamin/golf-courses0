@@ -19,10 +19,10 @@
 <!-- Page Content -->
 <div class="content">
     <div class="container">
-    
+
         <div class="row">
             <div class="col-12">
-            
+
                 <div class="card">
                     <div class="card-body">
                         <div class="booking-doc-info">
@@ -52,19 +52,20 @@
                     <div class="col-12 col-sm-8 col-md-6 text-sm-right">
                         <div class="bookingrange btn btn-white btn-sm mb-3">
                             <i class="far fa-calendar-alt mr-2"></i>
-                            <input name="daterangeInput" id="daterange" daterangepicker [options]="options" (selected)="selectedDate($event, daterange)" />
+                            <input name="daterangeInput" id="daterange" daterangepicker [options]="options"
+                                (selected)="selectedDate($event, daterange)" />
                             <i class="fas fa-chevron-down ml-2"></i>
                         </div>
                     </div>
                 </div>
                 <!-- Schedule Widget -->
                 <div class="card booking-schedule schedule-widget">
-                
+
                     <!-- Schedule Header -->
                     <div class="schedule-header">
                         <div class="row">
                             <div class="col-md-12">
-                            
+
                                 <!-- Day Slot -->
                                 <div class="day-slot">
                                     <ul>
@@ -109,17 +110,17 @@
                                     </ul>
                                 </div>
                                 <!-- /Day Slot -->
-                                
+
                             </div>
                         </div>
                     </div>
                     <!-- /Schedule Header -->
-                    
+
                     <!-- Schedule Content -->
                     <div class="schedule-cont">
                         <div class="row">
                             <div class="col-md-12">
-                            
+
                                 <!-- Time Slot -->
                                 <div class="time-slot">
                                     <ul class="clearfix">
@@ -203,24 +204,24 @@
                                     </ul>
                                 </div>
                                 <!-- /Time Slot -->
-                                
+
                             </div>
                         </div>
                     </div>
                     <!-- /Schedule Content -->
-                    
+
                 </div>
                 <!-- /Schedule Widget -->
-                
+
                 <!-- Submit Section -->
                 <div class="submit-section proceed-btn text-right">
                     <a routerLink='/golfers/checkout' class="btn btn-primary submit-btn">Proceed to Pay</a>
                 </div>
                 <!-- /Submit Section -->
-                
+
             </div>
         </div>
     </div>
 
-</div>		
+</div>
 <!-- /Page Content -->

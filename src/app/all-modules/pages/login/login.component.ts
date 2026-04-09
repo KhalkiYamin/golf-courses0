@@ -1,4 +1,3 @@
-// filepath: c:\Users\LENOVO\Desktop\project\golf-courses\src\app\all-modules\pages\login\login.component.ts
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
@@ -63,17 +62,35 @@ export class LoginComponent implements OnInit {
         this.loading = false;
         this.successMsg = 'Connexion réussie ! Redirection...';
 
-        // Store token if returned
+        localStorage.removeItem('token');
+        localStorage.removeItem('role');
+        localStorage.removeItem('email');
+        localStorage.removeItem('nom');
+        localStorage.removeItem('prenom');
+
         if (response.token) {
           localStorage.setItem('token', response.token);
         }
+
         if (response.role) {
           localStorage.setItem('role', response.role);
         }
 
-        // Redirect based on role
+        if (response.email) {
+          localStorage.setItem('email', response.email);
+        }
+
+        if (response.nom) {
+          localStorage.setItem('nom', response.nom);
+        }
+
+        if (response.prenom) {
+          localStorage.setItem('prenom', response.prenom);
+        }
+
         setTimeout(() => {
           const role = response.role;
+
           if (role === 'ADMIN') {
             this.router.navigate(['/golf-advisors/advisors-dashboard']);
           } else if (role === 'COACH') {
@@ -87,14 +104,16 @@ export class LoginComponent implements OnInit {
       },
       error: (err: any) => {
         this.loading = false;
+
         if (err.status === 401) {
           this.errorMsg = 'Email ou mot de passe incorrect';
         } else if (err.status === 403) {
-          this.errorMsg = 'Votre compte est désactivé. Contactez l\'administrateur.';
+          this.errorMsg = "Votre compte est désactivé. Contactez l'administrateur.";
         } else if (err.status === 0) {
           this.errorMsg = 'Impossible de contacter le serveur. Vérifiez votre connexion.';
         } else {
-          this.errorMsg = err.error?.message || 'Erreur lors de la connexion. Veuillez réessayer.';
+          this.errorMsg =
+            err.error?.message || 'Erreur lors de la connexion. Veuillez réessayer.';
         }
       },
     });

@@ -31,6 +31,9 @@ export class AthleteDashboardComponent implements OnInit {
     availableSeances: ReservationSeanceDto[] = [];
     myReservations: ReservationSeanceDto[] = [];
 
+    lastSession: any = null;
+    lastSessionLoading = false;
+
     loading = false;
     reservationsLoading = false;
     errorMessage = '';
@@ -65,6 +68,7 @@ export class AthleteDashboardComponent implements OnInit {
         this.loadAvailableSeances();
         this.loadMyReservations();
         this.loadPresenceSummary();
+        this.loadLastSession();
     }
 
     loadAthleteProfile(): void {
@@ -86,6 +90,23 @@ export class AthleteDashboardComponent implements OnInit {
             },
             error: () => {
                 this.athleteSpecialite = '';
+            }
+        });
+    }
+
+    loadLastSession(): void {
+        this.lastSessionLoading = true;
+
+        this.reservationSeanceService.getLastSessionForAthlete().subscribe({
+            next: (res) => {
+                console.log('LAST SESSION DASHBOARD =', res);
+                this.lastSession = res;
+                this.lastSessionLoading = false;
+            },
+            error: (err) => {
+                console.error(err);
+                this.lastSession = null;
+                this.lastSessionLoading = false;
             }
         });
     }
@@ -187,6 +208,7 @@ export class AthleteDashboardComponent implements OnInit {
                 this.showToast('success', this.successMessage);
                 this.loadAvailableSeances();
                 this.loadMyReservations();
+                this.loadLastSession();
             },
             error: (error: any) => {
                 this.errorMessage = error?.error?.message || 'Impossible d’effectuer la réservation.';
