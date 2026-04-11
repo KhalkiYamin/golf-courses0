@@ -8,9 +8,9 @@ import { AthleteShellLayoutComponent as AthleteLayoutComponent } from './athlete
 import { AthleteDashboardComponent } from './athlete-dashboard/athlete-dashboard.component';
 import { AthleteProfileComponent } from './athlete-profile/athlete-profile.component';
 import { AthleteSessionsComponent } from './athlete-sessions/athlete-sessions.component';
-import { AthleteResourcesComponent } from './athlete-resources/athlete-resources.component';
 import { AthleteNotificationsComponent } from './athlete-notifications/athlete-notifications.component';
 import { AthletePlanningComponent } from './athlete-planning/athlete-planning.component';
+import { AthleteEvaluationsComponent } from './athlete-evaluations/athlete-evaluations.component';
 
 @NgModule({
     declarations: [
@@ -18,9 +18,9 @@ import { AthletePlanningComponent } from './athlete-planning/athlete-planning.co
         AthleteDashboardComponent,
         AthleteProfileComponent,
         AthleteSessionsComponent,
-        AthleteResourcesComponent,
         AthleteNotificationsComponent,
-        AthletePlanningComponent
+        AthletePlanningComponent,
+        AthleteEvaluationsComponent
     ],
     imports: [
         CommonModule,

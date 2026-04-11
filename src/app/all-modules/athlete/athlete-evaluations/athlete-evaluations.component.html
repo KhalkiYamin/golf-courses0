@@ -1,0 +1,122 @@
+<section class="athlete-evaluations-page">
+    <header class="evaluations-header">
+        <div>
+            <p class="eyebrow">Performance Analytics</p>
+            <h2>Mes Evaluations Coach</h2>
+            <p class="subtitle">
+                Visualisez vos indicateurs de performance avec les memes criteres que votre coach.
+            </p>
+        </div>
+
+        <button type="button" class="refresh-button" (click)="loadEvaluations()" [disabled]="loading">
+            {{ loading ? 'Chargement...' : 'Actualiser' }}
+        </button>
+    </header>
+
+    <div *ngIf="errorMessage" class="status-box error-box">
+        {{ errorMessage }}
+    </div>
+
+    <div *ngIf="loading" class="status-box loading-box">
+        Chargement de vos evaluations...
+    </div>
+
+    <ng-container *ngIf="!loading">
+        <section class="summary-grid">
+            <article class="summary-card pulse-card">
+                <p class="label">Athlete</p>
+                <h3>{{ athleteName }}</h3>
+                <p class="hint">{{ athleteSport }} · {{ athleteLevel }}</p>
+            </article>
+
+            <article class="summary-card">
+                <p class="label">Score Global</p>
+                <h3>{{ averageScore }}/10</h3>
+                <p class="hint">Evaluation moyenne actuelle</p>
+            </article>
+
+            <article class="summary-card" *ngIf="strongestMetric as strongest">
+                <p class="label">Point Fort</p>
+                <h3>{{ strongest.label }}</h3>
+                <p class="hint">{{ strongest.score }}/10</p>
+            </article>
+
+            <article class="summary-card" *ngIf="improvementMetric as weakest">
+                <p class="label">A Prioriser</p>
+                <h3>{{ weakest.label }}</h3>
+                <p class="hint">{{ weakest.score }}/10</p>
+            </article>
+        </section>
+
+        <section class="analytics-grid">
+            <article class="chart-shell metric-shell">
+                <div class="panel-header">
+                    <div>
+                        <h4>Bar Chart Interactif</h4>
+                        <p>Technique, Physique, Vitesse et Discipline.</p>
+                    </div>
+                </div>
+
+                <div class="bar-chart">
+                    <button type="button" *ngFor="let metric of metricBars; let i = index" class="bar-row"
+                        [class.is-active]="selectedMetricKey === metric.key" (click)="selectMetric(metric)">
+                        <div class="row-top">
+                            <span class="metric-label">{{ metric.label }}</span>
+                            <span class="metric-score">{{ metric.score }}/10</span>
+                        </div>
+
+                        <div class="track">
+                            <span [class]="'fill tone-' + metric.tone" [style.width.%]="metric.width"
+                                [style.animation-delay.ms]="120 * i"></span>
+                        </div>
+
+                        <div class="row-footer">
+                            <span class="target">Objectif {{ metric.target }}/10</span>
+                            <span class="status">{{ scoreLabel(metric.score) }}</span>
+                        </div>
+                    </button>
+                </div>
+            </article>
+
+            <article class="chart-shell insight-shell" *ngIf="selectedMetric as selected">
+                <div class="panel-header">
+                    <div>
+                        <h4>Analyse Detaillee</h4>
+                        <p>Lecture dynamique de la metrique selectionnee.</p>
+                    </div>
+                </div>
+
+                <div class="insight-content">
+                    <div class="insight-score">{{ selected.score }}/10</div>
+                    <h5>{{ selected.label }}</h5>
+                    <p>
+                        <strong>{{ scoreLabel(selected.score) }}</strong>
+                        · Ecart a l objectif: {{ selected.gapToTarget > 0 ? selected.gapToTarget : 0 }}
+                    </p>
+
+                    <div class="mini-trend">
+                        <div class="trend-bar" *ngFor="let point of trendPoints; let i = index">
+                            <span class="trend-value">{{ point.value }}/10</span>
+                            <span class="trend-fill" [style.height.px]="point.value * 11"
+                                [style.animation-delay.ms]="90 * i"></span>
+                            <small>{{ point.label }}</small>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </section>
+
+        <section class="coach-note-card">
+            <div class="panel-header">
+                <div>
+                    <h4>Retour Du Coach</h4>
+                    <p>Derniere mise a jour: {{ lastUpdated }}</p>
+                </div>
+            </div>
+
+            <p class="coach-note">
+                {{ coachComment }}
+            </p>
+        </section>
+    </ng-container>
+</section>

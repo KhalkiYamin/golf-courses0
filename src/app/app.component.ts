@@ -19,12 +19,21 @@ export class AppComponent {
     return this.activeRoute === 'dashboard' && (this.active2Route === 'coach' || this.active2Route === 'athlete');
   }
 
+  private isCheckoutFlowRoute(): boolean {
+    return this.activeRoute === 'golfers' &&
+      (this.active2Route === 'cart' || this.active2Route === 'information' || this.active2Route === 'checkout');
+  }
+
+  private isCheckoutSuccessRoute(): boolean {
+    return this.activeRoute === 'golfers' && this.active2Route === 'booking-success';
+  }
+
   constructor(private router: Router) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationStart) {
         const url = event.url.split("/");
-        this.url = url[1];
-        this.url1 = url[2];
+        this.url = (url[1] || '').split('?')[0].split('#')[0];
+        this.url1 = (url[2] || '').split('?')[0].split('#')[0];
         this.activeRoute = this.url;
         this.active2Route = this.url1;
 
@@ -38,6 +47,10 @@ export class AppComponent {
           this.active2Route === 'ressources-sportives'
           || this.activeRoute === 'paremetres' ||
           this.active2Route === 'parametres' ||
+          this.activeRoute === 'payments' ||
+          this.active2Route === 'payments' ||
+          this.isCheckoutSuccessRoute() ||
+          this.isCheckoutFlowRoute() ||
           this.isPrivateDashboardRoute()
         ) {
           this.showHeader = false;
@@ -45,9 +58,10 @@ export class AppComponent {
           this.showHeader = true;
         }
         if (this.active2Route === "chat-advisor" || this.active2Route === "map-grid" || this.active2Route === "map-list" || this.active2Route === "chat" || this.active2Route === "voice-call" || this.active2Route === "video-call" || this.activeRoute === 'advisors-dashboard' ||
-          this.active2Route === 'advisors-dashboard' || this.activeRoute === 'batch' ||
+          this.active2Route === 'advisors-dashboard' || this.activeRoute === 'batch' || this.isCheckoutFlowRoute() ||
           this.active2Route === 'batch' || this.activeRoute === 'categories' ||
-          this.active2Route === 'categories' || this.activeRoute === 'ressources-sportives' || this.active2Route === 'users' || this.activeRoute === 'users' || this.active2Route === 'parametres' || this.activeRoute === 'parametres' ||
+          this.active2Route === 'categories' || this.activeRoute === 'ressources-sportives' || this.active2Route === 'users' || this.activeRoute === 'users' || this.active2Route === 'parametres' || this.activeRoute === 'parametres' || this.activeRoute === 'payments' || this.active2Route === 'payments' ||
+          this.isCheckoutSuccessRoute() ||
           this.active2Route === 'ressources-sportives' || this.isPrivateDashboardRoute()) {
           this.hideFooter = true;
         } else {

@@ -18,23 +18,21 @@ export class CoachLayoutComponent {
     coachProfile = {
         initials: 'SN',
         name: 'Coach Nour',
-        specialty: 'Football Coach'
+        specialty: 'Coach de football'
     };
 
     usersMenuItems = [
-        { label: 'Coach Profile', path: '/dashboard/coach/profile' },
+        { label: 'Profil coach', path: '/dashboard/coach/profile' },
         { label: 'Athletes', path: '/dashboard/coach/athletes' }
     ];
 
     enterprisesMenuItems = [
-        { label: 'Sessions', path: '/dashboard/coach/sessions' },
-        { label: 'Planning', path: '/dashboard/coach/planning' },
-        { label: 'Resources', path: '/dashboard/coach/resources' }
+        { label: 'Seances', path: '/dashboard/coach/sessions' },
+        { label: 'Planning', path: '/dashboard/coach/planning' }
     ];
 
     settingsMenuItems = [
         { label: 'Presences', path: '/dashboard/coach/presences' },
-        { label: 'Evaluations', path: '/dashboard/coach/evaluations' },
         { label: 'Notifications', path: '/dashboard/coach/notifications' }
     ];
 
@@ -43,6 +41,38 @@ export class CoachLayoutComponent {
     settingsMenuPaths = this.settingsMenuItems.map((item) => item.path);
 
     constructor(private router: Router) { }
+
+    get filteredUsersMenuItems() {
+        return this.filterMenuItems(this.usersMenuItems);
+    }
+
+    get filteredEnterprisesMenuItems() {
+        return this.filterMenuItems(this.enterprisesMenuItems);
+    }
+
+    get filteredSettingsMenuItems() {
+        return this.filterMenuItems(this.settingsMenuItems);
+    }
+
+    get hasSearchTerm(): boolean {
+        return this.searchTerm.trim().length > 0;
+    }
+
+    get hasSearchResults(): boolean {
+        return this.filteredUsersMenuItems.length > 0 ||
+            this.filteredEnterprisesMenuItems.length > 0 ||
+            this.filteredSettingsMenuItems.length > 0;
+    }
+
+    searchAndNavigate(): void {
+        const firstResult = this.filteredUsersMenuItems[0] ||
+            this.filteredEnterprisesMenuItems[0] ||
+            this.filteredSettingsMenuItems[0];
+
+        if (firstResult) {
+            this.router.navigate([firstResult.path]);
+        }
+    }
 
     toggleSection(sectionKey: string): void {
         this.expandedSections[sectionKey] = !this.expandedSections[sectionKey];
@@ -74,5 +104,15 @@ export class CoachLayoutComponent {
         localStorage.removeItem('token');
         localStorage.removeItem('role');
         this.router.navigate(['/pages/login']);
+    }
+
+    private filterMenuItems(items: Array<{ label: string; path: string }>): Array<{ label: string; path: string }> {
+        const term = this.searchTerm.trim().toLowerCase();
+
+        if (!term) {
+            return items;
+        }
+
+        return items.filter((item) => item.label.toLowerCase().includes(term));
     }
 }

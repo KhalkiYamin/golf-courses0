@@ -4,10 +4,10 @@
             <div>
                 <div class="brand">
                     <div class="brand-logo">
-                        <img src="assets/img/athlethe.png" alt="Athlete logo" class="brand-logo-img">
+                        <img src="assets/img/athlethe.png" alt="Logo athlete" class="brand-logo-img">
                     </div>
                     <div class="brand-text">
-                        <h2>Athlete</h2>
+                        <h2>Athlète</h2>
                         <p>Dashboard sportif</p>
                     </div>
                 </div>
@@ -43,11 +43,11 @@
             <div class="sidebar-footer">
                 <button type="button" class="secondary-item">
                     <span class="icon">⚙</span>
-                    <span>Parametres</span>
+                    <span>Paramètres</span>
                 </button>
-                <button class="logout-btn" (click)="logout()">
+                <button class="logout-btn" (click)="openLogoutConfirm()">
                     <span class="icon">⇠</span>
-                    <span>Deconnexion</span>
+                    <span>Déconnexion</span>
                 </button>
             </div>
         </div>
@@ -58,4 +58,25 @@
             <router-outlet></router-outlet>
         </section>
     </main>
+
+    <div class="logout-modal-overlay" *ngIf="showLogoutConfirm" (click)="closeLogoutConfirm()">
+        <section class="logout-modal" (click)="$event.stopPropagation()" role="dialog" aria-modal="true"
+            aria-labelledby="logout-title">
+            <header class="logout-modal-header">
+                <h3 id="logout-title">CONFIRMATION</h3>
+                <button type="button" class="logout-close" (click)="closeLogoutConfirm()" aria-label="Fermer">
+                    ×
+                </button>
+            </header>
+
+            <div class="logout-modal-body">
+                Êtes-vous sûr de vouloir vous déconnecter ?
+            </div>
+
+            <footer class="logout-modal-actions">
+                <button type="button" class="logout-cancel" (click)="closeLogoutConfirm()">Annuler</button>
+                <button type="button" class="logout-confirm" (click)="logout()">Se déconnecter</button>
+            </footer>
+        </section>
+    </div>
 </div>

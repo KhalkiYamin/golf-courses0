@@ -1,4 +1,52 @@
-/* Header alignment cleanup */
+:host {
+    --h-bg: #031025;
+    --h-card: #0e254a;
+    --h-border: rgba(160, 208, 255, 0.24);
+    --h-cyan: #39f0ff;
+    --h-blue: #4f7dff;
+    --h-text: #f8fafc;
+    --h-muted: rgba(255, 255, 255, 0.74);
+}
+
+.header-top {
+    background: linear-gradient(90deg, #031025, #081a3a);
+    border-bottom: 1px solid rgba(57, 240, 255, 0.14);
+}
+
+.header-top a,
+.header-top .nav-link {
+    color: var(--h-muted) !important;
+}
+
+.header-top .nav-link:hover,
+.header-top a:hover {
+    color: var(--h-cyan) !important;
+}
+
+.header-top .dropdown-menu {
+    background: var(--h-card);
+    border: 1px solid var(--h-border);
+    border-radius: 12px;
+}
+
+.header-top .dropdown-item {
+    color: var(--h-text);
+}
+
+.header-top .dropdown-item:hover {
+    background: rgba(0, 229, 255, 0.08);
+    color: var(--h-cyan);
+}
+
+.header.header-trans {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(3, 16, 37, 0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(57, 240, 255, 0.15);
+}
+
 .header .header-nav {
     margin-bottom: 0;
 }
@@ -61,11 +109,69 @@
     padding: 0;
 }
 
+.header .main-nav>li>a {
+    color: var(--h-text) !important;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+}
+
+.header .main-nav>li>a:hover,
+.header .main-nav>li.active>a {
+    color: var(--h-cyan) !important;
+}
+
+.header .submenu {
+    background: #081a3a !important;
+    border: 1px solid rgba(57, 240, 255, 0.18);
+    border-radius: 14px;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+}
+
+.header .submenu a {
+    color: #dbe4f0 !important;
+}
+
+.header .submenu a:hover,
+.header .submenu li.active>a {
+    color: var(--h-cyan) !important;
+}
+
 .header .header-navbar-rht {
     margin-left: 16px;
     padding: 0;
 }
 
+.header .contact-item {
+    color: var(--h-text);
+    border: 1px solid rgba(57, 240, 255, 0.25);
+    border-radius: 999px;
+    padding: 7px 14px;
+    background: rgba(79, 125, 255, 0.12);
+}
+
+.header .contact-item a {
+    color: var(--h-text) !important;
+    font-weight: 700;
+}
+
+.header .contact-item a:hover {
+    color: var(--h-cyan) !important;
+}
+
 .header .cart-item {
     display: none;
+}
+
+@media (max-width: 991px) {
+    .header-top {
+        display: none;
+    }
+
+    .header.header-trans {
+        background: #031025;
+    }
+
+    .header .main-menu-wrapper {
+        background: #081a3a;
+    }
 }

@@ -46,8 +46,14 @@
 
                 <div class="col-md-6">
                     <label class="form-label" for="email">Email</label>
-                    <input id="email" class="form-control" type="email" formControlName="email" />
-                    <small class="text-danger" *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
+                    <input id="email" class="form-control" type="email" formControlName="email"
+                        [readonly]="!!athleteEmail" />
+                    <small class="text-danger"
+                        *ngIf="form.get('email')?.hasError('athleteEmailMismatch') && form.get('email')?.touched">
+                        Email doit etre le meme que celui du compte athlete connecte.
+                    </small>
+                    <small class="text-danger"
+                        *ngIf="!form.get('email')?.hasError('athleteEmailMismatch') && form.get('email')?.invalid && form.get('email')?.touched">
                         Entrez une adresse e-mail valide.
                     </small>
                 </div>

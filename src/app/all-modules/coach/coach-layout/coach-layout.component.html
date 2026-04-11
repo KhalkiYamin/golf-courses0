@@ -7,7 +7,7 @@
                 </div>
                 <div class="brand-copy">
                     <h2>CoachAdmin</h2>
-                    <p>Workspace</p>
+                    <p>Espace</p>
                 </div>
             </div>
 
@@ -15,7 +15,7 @@
                 <a class="nav-item" [routerLink]="'/dashboard/coach/dashboard'" routerLinkActive="active"
                     [routerLinkActiveOptions]="{ exact: true }">
                     <span class="material-symbols-rounded nav-icon">space_dashboard</span>
-                    <span class="nav-label">Dashboard</span>
+                    <span class="nav-label">Tableau de bord</span>
                     <span class="active-dot"></span>
                 </a>
 
@@ -23,13 +23,13 @@
                     <button type="button" class="nav-item nav-toggle" (click)="toggleSection('users')"
                         [class.active]="hasActiveRoute(usersMenuPaths)">
                         <span class="material-symbols-rounded nav-icon">group</span>
-                        <span class="nav-label">Users</span>
+                        <span class="nav-label">Utilisateurs</span>
                         <span class="material-symbols-rounded chevron"
                             [class.open]="isExpanded('users')">expand_more</span>
                     </button>
 
-                    <div class="submenu" [class.open]="isExpanded('users')">
-                        <a *ngFor="let item of usersMenuItems" class="submenu-item" [routerLink]="item.path"
+                    <div class="submenu" [class.open]="isExpanded('users') || hasSearchTerm">
+                        <a *ngFor="let item of filteredUsersMenuItems" class="submenu-item" [routerLink]="item.path"
                             routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                             <span class="submenu-dot"></span>
                             <span>{{ item.label }}</span>
@@ -41,14 +41,15 @@
                     <button type="button" class="nav-item nav-toggle" (click)="toggleSection('enterprises')"
                         [class.active]="hasActiveRoute(enterprisesMenuPaths)">
                         <span class="material-symbols-rounded nav-icon">apartment</span>
-                        <span class="nav-label">Enterprises</span>
+                        <span class="nav-label">Organisation</span>
                         <span class="material-symbols-rounded chevron"
                             [class.open]="isExpanded('enterprises')">expand_more</span>
                     </button>
 
-                    <div class="submenu" [class.open]="isExpanded('enterprises')">
-                        <a *ngFor="let item of enterprisesMenuItems" class="submenu-item" [routerLink]="item.path"
-                            routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                    <div class="submenu" [class.open]="isExpanded('enterprises') || hasSearchTerm">
+                        <a *ngFor="let item of filteredEnterprisesMenuItems" class="submenu-item"
+                            [routerLink]="item.path" routerLinkActive="active"
+                            [routerLinkActiveOptions]="{ exact: true }">
                             <span class="submenu-dot"></span>
                             <span>{{ item.label }}</span>
                         </a>
@@ -59,13 +60,13 @@
                     <button type="button" class="nav-item nav-toggle" (click)="toggleSection('settings')"
                         [class.active]="hasActiveRoute(settingsMenuPaths)">
                         <span class="material-symbols-rounded nav-icon">settings</span>
-                        <span class="nav-label">Settings</span>
+                        <span class="nav-label">Parametres</span>
                         <span class="material-symbols-rounded chevron"
                             [class.open]="isExpanded('settings')">expand_more</span>
                     </button>
 
-                    <div class="submenu" [class.open]="isExpanded('settings')">
-                        <a *ngFor="let item of settingsMenuItems" class="submenu-item" [routerLink]="item.path"
+                    <div class="submenu" [class.open]="isExpanded('settings') || hasSearchTerm">
+                        <a *ngFor="let item of filteredSettingsMenuItems" class="submenu-item" [routerLink]="item.path"
                             routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                             <span class="submenu-dot"></span>
                             <span>{{ item.label }}</span>
@@ -77,7 +78,7 @@
             <div class="sidebar-footer">
                 <button type="button" class="nav-item nav-item-logout" (click)="logout()">
                     <span class="material-symbols-rounded nav-icon">logout</span>
-                    <span class="nav-label">Logout</span>
+                    <span class="nav-label">Deconnexion</span>
                 </button>
             </div>
         </div>
@@ -86,20 +87,19 @@
     <div class="main-content">
         <div class="topbar">
             <div class="topbar-left">
-                <h1>Coach Dashboard</h1>
+                <h1>Tableau de bord coach</h1>
                 <p>Bienvenue dans votre espace de gestion</p>
             </div>
 
             <div class="topbar-right">
                 <div class="search-box">
-                    <input type="text" placeholder="Rechercher..." [(ngModel)]="searchTerm" />
+                    <input type="text" placeholder="Rechercher..." [(ngModel)]="searchTerm"
+                        (keyup.enter)="searchAndNavigate()" />
                 </div>
 
                 <div class="coach-profile">
-                    <div class="coach-avatar">{{ coachProfile.initials }}</div>
-                    <div class="coach-info">
-                        <h4>{{ coachProfile.name }}</h4>
-                        <p>{{ coachProfile.specialty }}</p>
+                    <div class="coach-avatar">
+                        <img src="assets/img/coaches/aa.png" alt="Coach logo" class="coach-avatar-image" />
                     </div>
                 </div>
             </div>
@@ -107,6 +107,9 @@
 
         <section class="content-section">
             <div class="content-card">
+                <p class="search-empty-state" *ngIf="hasSearchTerm && !hasSearchResults">
+                    Aucun menu trouvé pour "{{ searchTerm }}".
+                </p>
                 <router-outlet></router-outlet>
             </div>
         </section>

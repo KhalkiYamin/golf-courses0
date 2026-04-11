@@ -66,6 +66,11 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+  setRole(role: Role): void {
+    this.role = role;
+    this.onRoleChange();
+  }
+
   submit(): void {
     this.errorMsg = '';
     this.successMsg = '';

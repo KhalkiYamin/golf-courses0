@@ -10,9 +10,7 @@ import { CoachProfileComponent } from './coach-profile/coach-profile.component';
 import { CoachAthletesComponent } from './coach-athletes/coach-athletes.component';
 import { CoachSessionsComponent } from './coach-sessions/coach-sessions.component';
 import { CoachPresenceComponent } from './coach-presences/coach-presences.component';
-import { CoachEvaluationsComponent } from './coach-evaluations/coach-evaluations.component';
 import { CoachNotificationsComponent } from './coach-notifications/coach-notifications.component';
-import { CoachResourcesComponent } from './coach-resources/coach-resources.component';
 import { CoachReservationsComponent } from './coach-reservations/coach-reservations.component';
 import { CoachPlanningComponent } from './coach-planning/coach-planning.component';
 
@@ -24,9 +22,7 @@ import { CoachPlanningComponent } from './coach-planning/coach-planning.componen
         CoachAthletesComponent,
         CoachSessionsComponent,
         CoachPresenceComponent,
-        CoachEvaluationsComponent,
         CoachNotificationsComponent,
-        CoachResourcesComponent,
         CoachReservationsComponent,
         CoachPlanningComponent
     ],

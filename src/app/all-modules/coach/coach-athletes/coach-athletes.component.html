@@ -96,7 +96,6 @@
                     </div>
 
                     <div class="top-actions">
-                        <button class="ghost-btn" (click)="viewProfile(athlete.id)">Voir profil</button>
                         <button class="ghost-btn secondary" (click)="resetEvaluation()">Reinitialiser</button>
                         <button class="save-btn" (click)="saveEvaluation()">Enregistrer</button>
                     </div>
@@ -144,15 +143,15 @@
                     <article class="criterion-card">
                         <div class="criterion-head">
                             <div>
-                                <span>Mental</span>
-                                <strong>{{ athlete.mental }}/10</strong>
+                                <span>Vitesse</span>
+                                <strong>{{ athlete.vitesse }}/10</strong>
                             </div>
-                            <small>Confiance et concentration</small>
+                            <small>Reactivite et acceleration</small>
                         </div>
-                        <input type="range" min="1" max="10" [ngModel]="athlete.mental"
-                            (ngModelChange)="setScore(athlete, 'mental', $event)" />
+                        <input type="range" min="1" max="10" [ngModel]="athlete.vitesse"
+                            (ngModelChange)="setScore(athlete, 'vitesse', $event)" />
                         <div class="criterion-bar">
-                            <div class="fill mental" [style.width.%]="scoreWidth(athlete.mental)"></div>
+                            <div class="fill vitesse" [style.width.%]="scoreWidth(athlete.vitesse)"></div>
                         </div>
                     </article>
 
@@ -177,7 +176,7 @@
                         <span class="summary-label">Note globale</span>
                         <strong>{{ overallScore(athlete) }}/10</strong>
                     </div>
-                    <p>Cette synthese combine technique, physique, mental et discipline pour vous aider a piloter les
+                    <p>Cette synthese combine technique, physique, vitesse et discipline pour vous aider a piloter les
                         decisions de progression.</p>
                 </div>
 

@@ -8,7 +8,17 @@ import {
     EvaluationResponse
 } from 'src/app/services/coach-dashboard.service';
 
-type ScoreKey = 'technique' | 'physique' | 'mental' | 'discipline';
+type ScoreKey = 'technique' | 'physique' | 'vitesse' | 'discipline';
+
+interface StoredEvaluation {
+    technique?: number;
+    physique?: number;
+    vitesse?: number;
+    mental?: number;
+    discipline?: number;
+    commentaire?: string;
+    lastUpdated?: string;
+}
 
 interface AthleteEvaluationItem {
     id: number;
@@ -18,7 +28,7 @@ interface AthleteEvaluationItem {
     progression: number;
     technique: number;
     physique: number;
-    mental: number;
+    vitesse: number;
     discipline: number;
     commentaire: string;
     coachInsight: string;
@@ -81,7 +91,7 @@ export class CoachAthletesComponent implements OnInit {
                         progression,
                         technique: this.resolveScore(stored.technique, apiEvaluation?.technique, progression),
                         physique: this.resolveScore(stored.physique, apiEvaluation?.physique, progression - 5),
-                        mental: this.resolveScore(stored.mental, apiEvaluation?.mental, progression - 8),
+                        vitesse: this.resolveScore(stored.vitesse, apiEvaluation?.mental, progression - 8),
                         discipline: this.resolveScore(stored.discipline, undefined, progression - 2),
                         commentaire: stored.commentaire || this.buildDefaultComment(athlete, progression),
                         coachInsight: this.buildInsight(athlete, progression),
@@ -143,7 +153,7 @@ export class CoachAthletesComponent implements OnInit {
     }
 
     overallScore(athlete: AthleteEvaluationItem): number {
-        const total = athlete.technique + athlete.physique + athlete.mental + athlete.discipline;
+        const total = athlete.technique + athlete.physique + athlete.vitesse + athlete.discipline;
         return Number((total / 4).toFixed(1));
     }
 
@@ -207,7 +217,7 @@ export class CoachAthletesComponent implements OnInit {
         const progression = athlete.progression;
         athlete.technique = this.resolveScore(undefined, undefined, progression);
         athlete.physique = this.resolveScore(undefined, undefined, progression - 5);
-        athlete.mental = this.resolveScore(undefined, undefined, progression - 8);
+        athlete.vitesse = this.resolveScore(undefined, undefined, progression - 8);
         athlete.discipline = this.resolveScore(undefined, undefined, progression - 2);
         athlete.commentaire = this.buildDefaultComment({
             id: athlete.id,
@@ -266,25 +276,32 @@ export class CoachAthletesComponent implements OnInit {
         return `Profil a accompagner de pres avec un suivi plus structure sur la constance et la confiance.`;
     }
 
-    private readStoredEvaluations(): { [key: number]: Partial<AthleteEvaluationItem> } {
+    private readStoredEvaluations(): { [key: number]: StoredEvaluation } {
         const raw = localStorage.getItem(this.storageKey);
         if (!raw) {
             return {};
         }
 
         try {
-            return JSON.parse(raw);
+            const parsed = JSON.parse(raw) as { [key: number]: StoredEvaluation };
+            Object.keys(parsed).forEach((key) => {
+                const item = parsed[Number(key)];
+                if (typeof item.vitesse !== 'number' && typeof item.mental === 'number') {
+                    item.vitesse = item.mental;
+                }
+            });
+            return parsed;
         } catch {
             return {};
         }
     }
 
     private writeStoredEvaluations(): void {
-        const payload = this.athletes.reduce((accumulator: { [key: number]: Partial<AthleteEvaluationItem> }, athlete: AthleteEvaluationItem) => {
+        const payload = this.athletes.reduce((accumulator: { [key: number]: StoredEvaluation }, athlete: AthleteEvaluationItem) => {
             accumulator[athlete.id] = {
                 technique: athlete.technique,
                 physique: athlete.physique,
-                mental: athlete.mental,
+                vitesse: athlete.vitesse,
                 discipline: athlete.discipline,
                 commentaire: athlete.commentaire,
                 lastUpdated: athlete.lastUpdated

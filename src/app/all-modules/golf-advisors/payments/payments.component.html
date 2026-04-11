@@ -4,10 +4,12 @@
             <p class="stat-label">Total encaissé</p>
             <h3>{{ totalAmount.toFixed(2) }} TND</h3>
         </article>
+
         <article class="stat-card">
             <p class="stat-label">Paiements validés</p>
             <h3>{{ totalPaid }}</h3>
         </article>
+
         <article class="stat-card">
             <p class="stat-label">Paiements en espèces</p>
             <h3>{{ totalPendingCash }}</h3>
@@ -29,6 +31,7 @@
                     <tr>
                         <th>#</th>
                         <th>Date</th>
+                        <th>Athlète</th>
                         <th>Séance</th>
                         <th>Coach</th>
                         <th>Type</th>
@@ -37,18 +40,20 @@
                         <th>Statut</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     <tr *ngFor="let payment of payments">
                         <td>{{ payment.id }}</td>
                         <td>{{ asDate(payment.createdAt) | date: 'dd/MM/yyyy HH:mm' }}</td>
+                        <td>{{ athleteFullName(payment) }}</td>
                         <td>{{ payment.title }}</td>
                         <td>{{ payment.coach }}</td>
                         <td>{{ payment.paymentType }}</td>
                         <td>{{ payment.paymentMethod }}</td>
                         <td>{{ payment.amount.toFixed(2) }} TND</td>
                         <td>
-                            <span class="status" [class.status--pending]="payment.status === 'PENDING_CASH'">
-                                {{ payment.status === 'PAID' ? 'Payé' : 'En attente (espèces)' }}
+                            <span class="status" [class.status--pending]="isPendingCash(payment)">
+                                {{ displayStatus(payment) }}
                             </span>
                         </td>
                     </tr>

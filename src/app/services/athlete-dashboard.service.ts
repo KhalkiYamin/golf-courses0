@@ -3,6 +3,19 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AthleteSeance } from '../all-modules/models/athlete-seance.model';
 
+export interface AthleteEvaluationResponse {
+    technique?: number;
+    physique?: number;
+    mental?: number;
+    discipline?: number;
+    endurance?: number;
+    speed?: number;
+    consistency?: number;
+    commentaire?: string;
+    coachName?: string;
+    updatedAt?: string;
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -47,6 +60,13 @@ export class AthleteDashboardService {
         return this.http.put<any>(
             `${this.apiUrl}/profile`,
             profile,
+            { headers: this.getHeaders() }
+        );
+    }
+
+    getAthleteEvaluations(): Observable<AthleteEvaluationResponse> {
+        return this.http.get<AthleteEvaluationResponse>(
+            `${this.apiUrl}/evaluations`,
             { headers: this.getHeaders() }
         );
     }

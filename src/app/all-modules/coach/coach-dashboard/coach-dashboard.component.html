@@ -70,7 +70,12 @@
 
                             <div class="session-details">
                                 <h4>{{ session.title }}</h4>
-                                <p>{{ session.group }} • {{ session.location }}</p>
+                                <p>
+                                    <span class="session-group">{{ session.group }}</span>
+                                    <span class="session-separator" *ngIf="session.location">•</span>
+                                    <span class="session-location" *ngIf="session.location">{{ session.location
+                                        }}</span>
+                                </p>
                             </div>
 
                             <div class="session-status-wrap">
@@ -80,10 +85,6 @@
                             </div>
 
                             <div class="session-actions">
-                                <button class="action-btn start-btn" (click)="startSession(session)">{{
-                                    labels.startActionLabel }}</button>
-                                <button class="action-btn light-btn" (click)="viewSessionDetails(session)">{{
-                                    labels.detailsActionLabel }}</button>
                                 <button class="action-btn light-btn" (click)="markSessionAttendance(session)">{{
                                     labels.attendanceActionLabel }}</button>
                             </div>
@@ -119,6 +120,11 @@
                                 <div class="athlete-details">
                                     <h4>{{ athlete.name }}</h4>
                                     <p>{{ athlete.sport }} • {{ athlete.level }}</p>
+
+                                    <div class="athlete-meta">
+                                        <span class="athlete-chip">{{ athlete.sport }}</span>
+                                        <span class="athlete-level">{{ athlete.level }}</span>
+                                    </div>
                                 </div>
 
                                 <div class="athlete-badges">
@@ -126,9 +132,6 @@
                                         {{ athlete.presence }}
                                     </span>
                                 </div>
-
-                                <button class="profile-btn" (click)="viewAthleteProfile(athlete)">{{
-                                    labels.profileActionLabel }}</button>
                             </div>
 
                             <div class="empty-state" *ngIf="athletes.length === 0">
@@ -214,7 +217,7 @@
                         </div>
                     </div>
 
-                    <div class="planning-list">
+                    <div class="planning-list" *ngIf="weeklyPlanning.length > 0; else noPlanningTemplate">
                         <div class="planning-item" *ngFor="let item of weeklyPlanning">
                             <div>
                                 <h4>{{ item.day }}</h4>
@@ -223,6 +226,12 @@
                             <span>{{ item.hour }}</span>
                         </div>
                     </div>
+
+                    <ng-template #noPlanningTemplate>
+                        <div class="empty-state">
+                            <p>Aucune séance planifiée pour le moment.</p>
+                        </div>
+                    </ng-template>
                 </div>
 
                 <div class="dashboard-card">

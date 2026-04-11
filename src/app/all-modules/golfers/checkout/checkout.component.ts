@@ -241,9 +241,21 @@ export class CheckoutComponent implements OnInit {
 
     this.loading = true;
 
+    const customerInfo = cart?.customerInfo;
+    const loggedAthlete = this.getLoggedAthleteIdentity();
+    const athleteFirstName = (customerInfo?.firstName || loggedAthlete.firstName || '').trim();
+    const athleteLastName = (customerInfo?.lastName || loggedAthlete.lastName || '').trim();
+    const athleteFullName = `${athleteFirstName} ${athleteLastName}`.trim();
+
     const payload = {
       title: this.order.title,
       coach: this.order.coach,
+      athleteFirstName,
+      athleteLastName,
+      athleteFullName,
+      athleteEmail: (customerInfo?.email || loggedAthlete.email || '').trim(),
+      customerName: athleteFullName,
+      clientName: athleteFullName,
       amount: this.total,
       quantity: this.order.quantity,
       paymentMethod: this.form.value.paymentMethod,
@@ -294,5 +306,23 @@ export class CheckoutComponent implements OnInit {
   isInvalid(field: string): boolean {
     const c = this.form.get(field);
     return !!(c?.invalid && c?.touched);
+  }
+
+  private getLoggedAthleteIdentity(): { firstName: string; lastName: string; email: string } {
+    try {
+      const rawUser = localStorage.getItem('user');
+      if (!rawUser) {
+        return { firstName: '', lastName: '', email: '' };
+      }
+
+      const user = JSON.parse(rawUser);
+      return {
+        firstName: (user?.prenom || user?.firstName || user?.firstname || '').toString().trim(),
+        lastName: (user?.nom || user?.lastName || user?.lastname || '').toString().trim(),
+        email: (user?.email || user?.mail || user?.username || user?.login || '').toString().trim()
+      };
+    } catch {
+      return { firstName: '', lastName: '', email: '' };
+    }
   }
 }

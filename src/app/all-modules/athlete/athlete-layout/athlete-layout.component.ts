@@ -20,6 +20,8 @@ interface AthleteMenuSection {
     styleUrls: ['./athlete-layout.component.css']
 })
 export class AthleteShellLayoutComponent {
+    showLogoutConfirm = false;
+
     menuItems: AthleteMenuItem[] = [
         { label: 'Dashboard', path: '/dashboard/athlete/dashboard', icon: '▦' }
     ];
@@ -40,7 +42,7 @@ export class AthleteShellLayoutComponent {
             label: 'Performance',
             icon: '▣',
             children: [
-                { label: 'Ressources', path: '/dashboard/athlete/resources' },
+                { label: 'Evaluations', path: '/dashboard/athlete/evaluations' },
                 { label: 'Notifications', path: '/dashboard/athlete/notifications' }
             ]
         }
@@ -69,7 +71,16 @@ export class AthleteShellLayoutComponent {
         return this.router.url === path || this.router.url.startsWith(`${path}/`);
     }
 
+    openLogoutConfirm(): void {
+        this.showLogoutConfirm = true;
+    }
+
+    closeLogoutConfirm(): void {
+        this.showLogoutConfirm = false;
+    }
+
     logout(): void {
+        this.showLogoutConfirm = false;
         localStorage.removeItem('token');
         localStorage.removeItem('role');
         this.router.navigate(['/pages/login']);

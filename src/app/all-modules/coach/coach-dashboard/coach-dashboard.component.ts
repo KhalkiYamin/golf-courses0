@@ -111,8 +111,8 @@ export class CoachDashboardComponent implements OnInit {
         heroTitle: 'Dashboard Coach',
         heroText: 'Gérez vos séances, vos athlètes et votre planning facilement.',
         nextSessionLabel: 'Prochaine séance',
-        sessionsTitle: 'Séances du jour',
-        sessionsSubtitle: 'Vos entraînements programmés aujourd’hui',
+        sessionsTitle: 'Dernière séance',
+        sessionsSubtitle: 'Votre dernière séance enregistrée',
         athletesTitle: 'Mes athlètes',
         athletesSubtitle: 'Liste rapide des athlètes suivis',
         planningTitle: 'Planning rapide',
@@ -201,28 +201,7 @@ export class CoachDashboardComponent implements OnInit {
 
     athletes: Athlete[] = [];
 
-    weeklyPlanning: PlanningItem[] = [
-        {
-            day: 'Lundi',
-            detail: 'Cardio & récupération',
-            hour: '09:00'
-        },
-        {
-            day: 'Mardi',
-            detail: 'Technique individuelle',
-            hour: '14:00'
-        },
-        {
-            day: 'Jeudi',
-            detail: 'Séance tactique',
-            hour: '16:30'
-        },
-        {
-            day: 'Vendredi',
-            detail: 'Match d’entraînement',
-            hour: '17:00'
-        }
-    ];
+    weeklyPlanning: PlanningItem[] = [];
 
     notifications: string[] = [
         'Un nouvel athlète a été affecté à votre groupe.',
@@ -388,17 +367,34 @@ export class CoachDashboardComponent implements OnInit {
                         location: nextSession.lieu || '-'
                     };
 
-                    // Mettre à jour séances du jour
-                    const today = new Date().toISOString().split('T')[0];
-                    const todaySeances = seances.filter(s => s.dateSeance === today);
+                    // Afficher uniquement la dernière séance enregistrée (date/heure la plus récente)
+                    const sortedSeances = [...seances].sort(
+                        (a, b) => this.getSeanceTimestamp(b) - this.getSeanceTimestamp(a)
+                    );
+                    const lastSeance = sortedSeances[0];
 
-                    this.todaySessions = todaySeances.map(s => ({
-                        time: s.heureSeance || '00:00',
-                        title: s.theme || 'Séance',
-                        group: s.groupe || s.sportTitle || '-',
-                        location: s.lieu || '-',
-                        status: s.statut || 'Planifiée',
-                        statusClass: this.mapStatusClass(s.statut)
+                    this.todaySessions = lastSeance ? [{
+                        time: lastSeance.heureSeance || '00:00',
+                        title: lastSeance.theme || 'Séance',
+                        group: lastSeance.groupe || lastSeance.sportTitle || '-',
+                        location: lastSeance.lieu || '-',
+                        status: lastSeance.statut || 'Planifiée',
+                        statusClass: this.mapStatusClass(lastSeance.statut)
+                    }] : [];
+
+                    const ascendingSeances = [...seances].sort(
+                        (a, b) => this.getSeanceTimestamp(a) - this.getSeanceTimestamp(b)
+                    );
+                    const now = Date.now();
+                    const upcomingSeances = ascendingSeances.filter(
+                        (seance) => this.getSeanceTimestamp(seance) >= now
+                    );
+                    const planningSource = (upcomingSeances.length > 0 ? upcomingSeances : ascendingSeances).slice(0, 4);
+
+                    this.weeklyPlanning = planningSource.map((seance) => ({
+                        day: this.formatPlanningDay(seance.dateSeance),
+                        detail: seance.theme || 'Séance',
+                        hour: seance.heureSeance || '--:--'
                     }));
 
                     // Mettre à jour stat cartes
@@ -408,10 +404,14 @@ export class CoachDashboardComponent implements OnInit {
                     if (sessionCardIndex !== -1) {
                         this.statsCards[sessionCardIndex].value = this.todaySessions.length;
                     }
+                } else {
+                    this.todaySessions = [];
+                    this.weeklyPlanning = [];
                 }
             },
             error: (err: any) => {
                 console.error('Erreur chargement séances:', err);
+                this.weeklyPlanning = [];
             }
         });
     }
@@ -461,6 +461,31 @@ export class CoachDashboardComponent implements OnInit {
         return 'status-soon';
     }
 
+    private getSeanceTimestamp(seance: Seance): number {
+        const datePart = seance.dateSeance || '';
+        const timePart = seance.heureSeance || '00:00';
+        const parsedDate = new Date(`${datePart}T${timePart}`);
+        const parsedTime = parsedDate.getTime();
+
+        if (!isNaN(parsedTime)) {
+            return parsedTime;
+        }
+
+        return seance.id || 0;
+    }
+
+    private formatPlanningDay(dateSeance: string): string {
+        const safeDate = (dateSeance || '').trim();
+        const parsedDate = new Date(`${safeDate}T00:00`);
+
+        if (isNaN(parsedDate.getTime())) {
+            return safeDate || '-';
+        }
+
+        const weekday = new Intl.DateTimeFormat('fr-FR', { weekday: 'long' }).format(parsedDate);
+        return weekday.charAt(0).toUpperCase() + weekday.slice(1);
+    }
+
     // Navigation et actions
     goToCreateSession(): void {
         this.router.navigate(['/dashboard/coach/sessions']);
@@ -502,9 +527,8 @@ export class CoachDashboardComponent implements OnInit {
         // Implémentation future
     }
 
-    markSessionAttendance(session: TodaySession): void {
-        console.log('Marquer présence:', session.title);
-        // Implémentation future
+    markSessionAttendance(_: TodaySession): void {
+        this.goToPresences();
     }
 
     viewAthleteProfile(athlete: Athlete): void {

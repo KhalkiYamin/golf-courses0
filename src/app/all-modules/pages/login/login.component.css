@@ -1,5 +1,4 @@
-/* ===== Sport Academy Login - Blue / White / Black ===== */
-
+/* White theme for login */
 .content {
     min-height: 100vh;
     padding: 40px 0;
@@ -16,7 +15,7 @@
     width: 320px;
     height: 320px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(37, 99, 235, 0.10) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(37, 99, 235, 0.1) 0%, transparent 70%);
     pointer-events: none;
 }
 
@@ -28,7 +27,7 @@
     width: 340px;
     height: 340px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(59, 130, 246, 0.10) 0%, transparent 72%);
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 72%);
     pointer-events: none;
 }
 
@@ -38,16 +37,11 @@
     z-index: 2;
 }
 
-.container::before {
-    display: none;
-}
-
-/* Main card */
 .account-content {
     background: rgba(255, 255, 255, 0.97);
     backdrop-filter: blur(14px);
     border-radius: 24px;
-    box-shadow: 0 20px 50px rgba(11, 18, 32, 0.10);
+    box-shadow: 0 20px 50px rgba(11, 18, 32, 0.1);
     overflow: hidden;
     border: 1px solid rgba(219, 234, 254, 0.95);
     position: relative;
@@ -62,16 +56,14 @@
     position: absolute;
     inset: 0 0 auto 0;
     height: 4px;
-    background: linear-gradient(90deg, #0B1220, #2563EB, #3B82F6);
+    background: linear-gradient(90deg, #0b1220, #2563eb, #3b82f6);
 }
 
-/* Row */
 .row.align-items-center.justify-content-center {
     min-height: 500px;
     align-items: stretch !important;
 }
 
-/* Left side */
 .login-left {
     background: linear-gradient(135deg, #eff6ff 0%, #f8fbff 50%, #ffffff 100%);
     display: flex;
@@ -89,7 +81,7 @@
     inset: 0;
     background:
         radial-gradient(circle at 30% 30%, rgba(37, 99, 235, 0.12) 0%, transparent 55%),
-        radial-gradient(circle at 75% 70%, rgba(59, 130, 246, 0.10) 0%, transparent 55%);
+        radial-gradient(circle at 75% 70%, rgba(59, 130, 246, 0.1) 0%, transparent 55%);
     pointer-events: none;
 }
 
@@ -103,7 +95,6 @@
     animation: enhancedFloat 6s ease-in-out infinite;
 }
 
-/* Right side */
 .login-right {
     padding: 42px 38px;
     display: flex;
@@ -113,7 +104,6 @@
     position: relative;
 }
 
-/* Header */
 .login-header {
     text-align: center;
     margin-bottom: 30px;
@@ -124,7 +114,7 @@
     font-weight: 800;
     margin-bottom: 8px;
     letter-spacing: -0.4px;
-    background: linear-gradient(135deg, #0B1220, #2563EB, #3B82F6);
+    background: linear-gradient(135deg, #0b1220, #2563eb, #3b82f6);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -139,7 +129,6 @@
     letter-spacing: 0.2px;
 }
 
-/* Form */
 form {
     width: 100%;
     max-width: 400px;
@@ -165,7 +154,7 @@ form {
 }
 
 .form-control:focus {
-    border-color: #2563EB;
+    border-color: #2563eb;
     box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.14);
     background: #ffffff;
     outline: none;
@@ -180,7 +169,6 @@ form {
     opacity: 1;
 }
 
-/* Floating label */
 .focus-label {
     position: absolute;
     left: 18px;
@@ -200,11 +188,10 @@ form {
     top: 0;
     left: 14px;
     font-size: 12px;
-    color: #2563EB;
+    color: #2563eb;
     font-weight: 700;
 }
 
-/* Password icon */
 .toggle-password {
     position: absolute;
     right: 16px;
@@ -221,19 +208,18 @@ form {
 }
 
 .toggle-password:hover {
-    color: #2563EB;
+    color: #2563eb;
     background: rgba(37, 99, 235, 0.08);
 }
 
-/* Button */
 .login-btn {
-    background: linear-gradient(135deg, #0B1220 0%, #2563EB 55%, #3B82F6 100%);
+    background: linear-gradient(135deg, #0b1220 0%, #2563eb 55%, #3b82f6 100%);
     border: none;
     border-radius: 14px;
     padding: 13px 20px;
     font-size: 15px;
     font-weight: 700;
-    color: white;
+    color: #ffffff;
     width: 100%;
     cursor: pointer;
     transition: all 0.25s ease;
@@ -261,14 +247,8 @@ form {
 .login-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 16px 32px rgba(37, 99, 235, 0.22);
-    background: linear-gradient(135deg, #0B1220 0%, #1D4ED8 55%, #2563EB 100%);
 }
 
-.login-btn:active {
-    transform: translateY(0);
-}
-
-/* Links */
 .forgot-link,
 .dont-have {
     text-align: center;
@@ -277,7 +257,7 @@ form {
 
 .forgot-link a,
 .dont-have a {
-    color: #2563EB;
+    color: #2563eb;
     text-decoration: none;
     font-weight: 600;
     font-size: 14px;
@@ -286,10 +266,9 @@ form {
 
 .forgot-link a:hover,
 .dont-have a:hover {
-    color: #0B1220;
+    color: #0b1220;
 }
 
-/* Errors */
 .error-message {
     color: #dc2626;
     font-size: 13px;
@@ -304,7 +283,6 @@ form {
     box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.08);
 }
 
-/* Alerts */
 .alert-custom {
     border-radius: 14px;
     border: none;
@@ -322,11 +300,10 @@ form {
 
 .alert-success {
     background: #eff6ff;
-    color: #1D4ED8;
-    border-left: 4px solid #2563EB;
+    color: #1d4ed8;
+    border-left: 4px solid #2563eb;
 }
 
-/* Animation */
 @keyframes enhancedFloat {
 
     0%,
@@ -339,11 +316,9 @@ form {
     }
 }
 
-/* Mobile */
 @media (max-width: 768px) {
     .content {
         padding: 20px 0;
-        background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
     }
 
     .account-content {
@@ -366,10 +341,6 @@ form {
 
     .login-header h3 {
         font-size: 26px;
-    }
-
-    .form-control {
-        height: 50px;
     }
 }
 

@@ -1,27 +1,36 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface CreatePaymentInput {
     title: string;
     coach: string;
+    athleteFirstName?: string;
+    athleteLastName?: string;
+    athleteFullName?: string;
+    athleteEmail?: string;
+    customerName?: string;
+    clientName?: string;
     amount: number;
     quantity: number;
     paymentMethod: string;
     paymentType: string;
     promoCode?: string;
     discount?: number;
+    seanceId?: number;
+    coachId?: number;
 }
 
 export interface PaymentRecord {
     id: number;
     title: string;
     coach: string;
+    athleteName?: string;
     amount: number;
     quantity: number;
     paymentMethod: string;
     paymentType: string;
-    promoCode?: string;
+    promoCode?: string | null;
     discount: number;
     finalAmount: number;
     status: 'PAID' | 'PENDING_CASH' | 'FAILED';
@@ -36,15 +45,29 @@ export class PaymentService {
 
     constructor(private http: HttpClient) { }
 
+    private getHeaders(): HttpHeaders {
+        const token = localStorage.getItem('token');
+
+        return new HttpHeaders({
+            Authorization: `Bearer ${token}`
+        });
+    }
+
     getPayments(): Observable<PaymentRecord[]> {
-        return this.http.get<PaymentRecord[]>(this.apiUrl);
+        return this.http.get<PaymentRecord[]>(this.apiUrl, {
+            headers: this.getHeaders()
+        });
     }
 
     getPaymentById(id: number): Observable<PaymentRecord> {
-        return this.http.get<PaymentRecord>(`${this.apiUrl}/${id}`);
+        return this.http.get<PaymentRecord>(`${this.apiUrl}/${id}`, {
+            headers: this.getHeaders()
+        });
     }
 
     createPayment(input: CreatePaymentInput): Observable<PaymentRecord> {
-        return this.http.post<PaymentRecord>(this.apiUrl, input);
+        return this.http.post<PaymentRecord>(this.apiUrl, input, {
+            headers: this.getHeaders()
+        });
     }
 }
