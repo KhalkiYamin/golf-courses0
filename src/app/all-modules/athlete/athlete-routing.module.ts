@@ -8,6 +8,8 @@ import { AthleteSessionsComponent } from './athlete-sessions/athlete-sessions.co
 import { AthleteNotificationsComponent } from './athlete-notifications/athlete-notifications.component';
 import { AthletePlanningComponent } from './athlete-planning/athlete-planning.component';
 import { AthleteEvaluationsComponent } from './athlete-evaluations/athlete-evaluations.component';
+import { AthleteChatbotComponent } from './athlete-chatbot/athlete-chatbot.component';
+import { AthleteCoachesComponent } from './athlete-coaches/athlete-coaches.component';
 
 const routes: Routes = [
     {
@@ -20,6 +22,8 @@ const routes: Routes = [
             { path: 'notifications', component: AthleteNotificationsComponent },
             { path: 'planning', component: AthletePlanningComponent },
             { path: 'evaluations', component: AthleteEvaluationsComponent },
+            { path: 'chatbot', component: AthleteChatbotComponent },
+            { path: 'coaches', component: AthleteCoachesComponent },
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
             { path: '**', redirectTo: 'dashboard' }
         ]

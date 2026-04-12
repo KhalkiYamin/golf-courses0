@@ -43,7 +43,9 @@ export class AthleteShellLayoutComponent {
             icon: '▣',
             children: [
                 { label: 'Evaluations', path: '/dashboard/athlete/evaluations' },
-                { label: 'Notifications', path: '/dashboard/athlete/notifications' }
+                { label: 'Notifications', path: '/dashboard/athlete/notifications' },
+                { label: 'Coach Profiles', path: '/dashboard/athlete/coaches' },
+                { label: 'Assistant', path: '/dashboard/athlete/chatbot' }
             ]
         }
     ];

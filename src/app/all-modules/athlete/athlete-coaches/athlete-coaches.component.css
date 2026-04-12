@@ -1,0 +1,270 @@
+.coach-profiles-page {
+    padding: 20px;
+    background: linear-gradient(180deg, #f7fbff 0%, #eef5fb 100%);
+    min-height: calc(100vh - 110px);
+}
+
+.hero {
+    background: linear-gradient(135deg, #0b5ea8 0%, #1b77c7 100%);
+    color: #fff;
+    border-radius: 18px;
+    padding: 24px;
+    margin-bottom: 18px;
+    box-shadow: 0 12px 24px rgba(10, 55, 104, 0.2);
+}
+
+.hero h2 {
+    margin: 0;
+    font-size: 1.9rem;
+}
+
+.hero p {
+    margin: 8px 0 6px;
+    opacity: 0.95;
+}
+
+.hero small {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 10px;
+    border-radius: 999px;
+}
+
+.state-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+    box-shadow: 0 6px 20px rgba(31, 41, 55, 0.08);
+    color: #1f2937;
+}
+
+.state-card.error {
+    border-left: 4px solid #c62828;
+    color: #8f1f1f;
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 16px;
+}
+
+.coach-list {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(31, 41, 55, 0.08);
+    padding: 12px;
+    max-height: calc(100vh - 210px);
+    overflow: auto;
+}
+
+.coach-list h3 {
+    margin: 4px 6px 12px;
+    color: #0f172a;
+    font-size: 1.05rem;
+}
+
+.coach-item {
+    width: 100%;
+    border: 1px solid #e7edf4;
+    border-radius: 12px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-align: left;
+    padding: 10px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.coach-item:hover {
+    border-color: #8dc3f0;
+    transform: translateY(-1px);
+}
+
+.coach-item.active {
+    border-color: #1b77c7;
+    background: #f3f9ff;
+}
+
+.coach-avatar,
+.profile-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0b5ea8, #3f9be2);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.coach-avatar-img,
+.profile-avatar-img {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.coach-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.coach-text strong {
+    color: #0f172a;
+    font-size: 0.94rem;
+}
+
+.coach-text span,
+.coach-text small {
+    color: #4b5563;
+}
+
+.coach-profile {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(31, 41, 55, 0.08);
+    padding: 18px;
+}
+
+.profile-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #edf2f7;
+}
+
+.profile-head .profile-avatar,
+.profile-head .profile-avatar-img {
+    width: 68px;
+    height: 68px;
+}
+
+.profile-head h3 {
+    margin: 0;
+    color: #0f172a;
+}
+
+.profile-head p {
+    margin: 5px 0 4px;
+    color: #334155;
+}
+
+.profile-head small {
+    color: #0b5ea8;
+    font-weight: 600;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 14px;
+}
+
+.info-card {
+    border: 1px solid #e6edf5;
+    border-radius: 12px;
+    padding: 12px;
+    background: #fbfdff;
+}
+
+.info-card h4 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    color: #0b5ea8;
+}
+
+.info-card p {
+    margin: 6px 0;
+    color: #334155;
+}
+
+.info-card strong {
+    color: #0f172a;
+}
+
+.cv-section {
+    margin-top: 14px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.cv-block {
+    border: 1px solid #e6edf5;
+    border-radius: 12px;
+    padding: 12px;
+    background: #fff;
+}
+
+.cv-block h4 {
+    margin: 0 0 8px;
+    color: #0b5ea8;
+}
+
+.cv-block ul {
+    margin: 0;
+    padding-left: 18px;
+}
+
+.cv-block li {
+    margin-bottom: 5px;
+    color: #334155;
+}
+
+.skills-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.skill-tag {
+    border-radius: 999px;
+    padding: 6px 10px;
+    font-size: 0.82rem;
+    background: #e5f2ff;
+    color: #0b5ea8;
+    font-weight: 600;
+}
+
+@media (max-width: 1100px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+
+    .coach-list {
+        max-height: unset;
+    }
+}
+
+@media (max-width: 900px) {
+
+    .cards-grid,
+    .cv-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .coach-profiles-page {
+        padding: 14px;
+    }
+
+    .hero {
+        border-radius: 12px;
+        padding: 18px;
+    }
+
+    .hero h2 {
+        font-size: 1.5rem;
+    }
+}

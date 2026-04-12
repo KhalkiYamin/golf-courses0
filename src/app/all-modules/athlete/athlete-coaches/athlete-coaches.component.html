@@ -1,0 +1,152 @@
+<section class="coach-profiles-page">
+    <header class="hero">
+        <div>
+            <h2>Coach Profiles</h2>
+            <p>
+                Explore verified coach CV details, qualifications, certifications, and availability.
+            </p>
+            <small *ngIf="athleteSport">Recommended for your sport: {{ athleteSport }}</small>
+        </div>
+    </header>
+
+    <div class="state-card" *ngIf="loading">Loading coach profiles...</div>
+    <div class="state-card error" *ngIf="!loading && errorMessage">{{ errorMessage }}</div>
+    <div class="state-card" *ngIf="!loading && !errorMessage && !filteredCoaches.length">
+        No coach profiles available for now.
+    </div>
+
+    <div class="layout" *ngIf="!loading && !errorMessage && filteredCoaches.length">
+        <aside class="coach-list">
+            <h3>Available Coaches</h3>
+            <button type="button" class="coach-item" *ngFor="let coach of filteredCoaches"
+                [class.active]="isSelected(coach)" (click)="selectCoach(coach)">
+                <div class="coach-avatar" *ngIf="!coach.imageUrl">{{ coach.initials }}</div>
+                <img *ngIf="coach.imageUrl" [src]="coach.imageUrl" [alt]="coach.fullName" class="coach-avatar-img" />
+                <div class="coach-text">
+                    <strong>{{ coach.fullName }}</strong>
+                    <span>{{ coach.speciality }}</span>
+                    <small>{{ coach.availability }}</small>
+                </div>
+            </button>
+        </aside>
+
+        <article class="coach-profile" *ngIf="selectedCoach as coach">
+            <div class="profile-head">
+                <div class="profile-avatar" *ngIf="!coach.imageUrl">{{ coach.initials }}</div>
+                <img *ngIf="coach.imageUrl" [src]="coach.imageUrl" [alt]="coach.fullName" class="profile-avatar-img" />
+                <div>
+                    <h3>{{ coach.fullName }}</h3>
+                    <p>{{ coach.speciality }} | {{ coach.sport }}</p>
+                    <small>{{ coach.availability }}</small>
+                </div>
+            </div>
+
+            <section class="cards-grid">
+                <div class="info-card">
+                    <h4>Informations personnelles</h4>
+                    <p *ngIf="hasDisplayValue(coach.firstName)"><strong>Prénom:</strong> {{ coach.firstName }}</p>
+                    <p *ngIf="hasDisplayValue(coach.lastName)"><strong>Nom:</strong> {{ coach.lastName }}</p>
+                    <p *ngIf="hasDisplayValue(coach.email)"><strong>Email:</strong> {{ coach.email }}</p>
+                    <p *ngIf="hasDisplayValue(coach.phone)"><strong>Téléphone:</strong> {{ coach.phone }}</p>
+                    <p *ngIf="hasDisplayValue(coach.username)"><strong>Nom d'utilisateur:</strong> {{ coach.username }}
+                    </p>
+                    <p *ngIf="hasDisplayValue(coach.gender)"><strong>Genre:</strong> {{ coach.gender }}</p>
+                    <p *ngIf="hasDisplayValue(coach.birthDate)"><strong>Date de naissance:</strong> {{ coach.birthDate
+                        }}</p>
+                </div>
+
+                <div class="info-card" *ngIf="hasDisplayValue(coach.biography)">
+                    <h4>Biographie</h4>
+                    <p>{{ coach.biography }}</p>
+                </div>
+
+                <div class="info-card">
+                    <h4>Informations sportives</h4>
+                    <p><strong>Sport:</strong> {{ coach.sport }}</p>
+                    <p><strong>Specialty:</strong> {{ coach.speciality }}</p>
+                    <p *ngIf="hasDisplayValue(coach.level)"><strong>Level:</strong> {{ coach.level }}</p>
+                    <p *ngIf="coach.experienceYears > 0"><strong>Experience:</strong> {{ coach.experienceYears }} years
+                    </p>
+                    <p><strong>Availability:</strong> {{ coach.availability }}</p>
+                </div>
+
+                <div class="info-card" *ngIf="hasClubInfo(coach)">
+                    <h4>Club</h4>
+                    <p *ngIf="hasDisplayValue(coach.clubName)"><strong>Nom du club:</strong> {{ coach.clubName }}</p>
+                    <p *ngIf="hasDisplayValue(coach.clubAddress)"><strong>Adresse du club:</strong> {{ coach.clubAddress
+                        }}</p>
+                    <p *ngIf="hasDisplayValue(coach.clubImage)"><strong>Image club:</strong> {{ coach.clubImage }}</p>
+                </div>
+
+                <div class="info-card" *ngIf="hasAddressInfo(coach)">
+                    <h4>Coordonnées</h4>
+                    <p *ngIf="hasDisplayValue(coach.addressLine1)"><strong>Adresse ligne 1:</strong> {{
+                        coach.addressLine1 }}</p>
+                    <p *ngIf="hasDisplayValue(coach.addressLine2)"><strong>Adresse ligne 2:</strong> {{
+                        coach.addressLine2 }}</p>
+                    <p *ngIf="hasDisplayValue(coach.city)"><strong>Ville:</strong> {{ coach.city }}</p>
+                    <p *ngIf="hasDisplayValue(coach.stateProvince)"><strong>État / Province:</strong> {{
+                        coach.stateProvince }}</p>
+                    <p *ngIf="hasDisplayValue(coach.country)"><strong>Pays:</strong> {{ coach.country }}</p>
+                    <p *ngIf="hasDisplayValue(coach.postalCode)"><strong>Code postal:</strong> {{ coach.postalCode }}
+                    </p>
+                </div>
+            </section>
+
+            <section class="cv-section">
+                <div class="cv-block" *ngIf="coach.services.length">
+                    <h4>Services</h4>
+                    <div class="skills-wrap">
+                        <span class="skill-tag" *ngFor="let service of coach.services">{{ service }}</span>
+                    </div>
+                </div>
+
+                <div class="cv-block" *ngIf="coach.specialisations.length">
+                    <h4>Spécialisations</h4>
+                    <div class="skills-wrap">
+                        <span class="skill-tag" *ngFor="let spec of coach.specialisations">{{ spec }}</span>
+                    </div>
+                </div>
+
+                <div class="cv-block" *ngIf="coach.diplomes.length">
+                    <h4>Diplômes</h4>
+                    <ul>
+                        <li *ngFor="let diplome of coach.diplomes">
+                            <strong>{{ diplome.title }}</strong>
+                            <span *ngIf="diplome.institute"> - {{ diplome.institute }}</span>
+                            <span *ngIf="diplome.year"> ({{ diplome.year }})</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="cv-block" *ngIf="coach.experiences.length">
+                    <h4>Expériences</h4>
+                    <ul>
+                        <li *ngFor="let exp of coach.experiences">
+                            <strong>{{ exp.clubName }}</strong>
+                            <span *ngIf="exp.position"> - {{ exp.position }}</span>
+                            <span *ngIf="exp.from || exp.to"> ({{ exp.from || '-' }} - {{ exp.to || '-' }})</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="cv-block" *ngIf="coach.recompenses.length">
+                    <h4>Récompenses</h4>
+                    <ul>
+                        <li *ngFor="let reward of coach.recompenses">
+                            <strong>{{ reward.title }}</strong>
+                            <span *ngIf="reward.year"> ({{ reward.year }})</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="cv-block" *ngIf="coach.resumeHighlights.length">
+                    <h4>Résumé</h4>
+                    <div class="skills-wrap">
+                        <span class="skill-tag" *ngFor="let item of coach.resumeHighlights">{{ item }}</span>
+                    </div>
+                </div>
+            </section>
+        </article>
+    </div>
+</section>

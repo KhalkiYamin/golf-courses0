@@ -39,6 +39,24 @@
         </div>
     </div>
 
+    <div class="dashboard-card coaches-highlight" *ngIf="athleteSpecialite">
+        <div class="card-header">
+            <div>
+                <h5>Coachs selon votre spécialité</h5>
+                <p>Spécialité athlète: {{ athleteSpecialite }}</p>
+            </div>
+            <a class="open-coaches-link" routerLink="/dashboard/athlete/coaches">Voir profils complets</a>
+        </div>
+
+        <div *ngIf="matchingCoachNames.length === 0" class="empty-state coaches-empty">
+            Aucun coach trouvé pour votre spécialité actuellement.
+        </div>
+
+        <div *ngIf="matchingCoachNames.length > 0" class="coach-tags-wrap">
+            <span class="coach-tag" *ngFor="let coachName of matchingCoachNames">{{ coachName }}</span>
+        </div>
+    </div>
+
     <div class="dashboard-card latest-session-card">
         <div class="card-header">
             <div>
@@ -301,5 +319,42 @@
                 Compris
             </button>
         </div>
+    </div>
+
+    <div class="chatbot-widget-layer" [class.open]="isChatOpen">
+        <div class="chatbot-widget-backdrop" *ngIf="isChatOpen" (click)="closeChatbot()"></div>
+
+        <section class="chatbot-widget-panel" [class.open]="isChatOpen" id="athlete-dashboard-chatbot"
+            [attr.aria-hidden]="!isChatOpen">
+            <header class="chatbot-widget-header">
+                <div>
+                    <span class="widget-kicker">Premium Assistant</span>
+                    <h3>Coach IA Athlete</h3>
+                    <p>Un assistant discret, rapide et toujours disponible depuis votre dashboard.</p>
+                </div>
+
+                <div class="widget-status-pill" aria-label="Assistant online">
+                    <span class="widget-status-dot"></span>
+                    <span>Online</span>
+                </div>
+
+                <button type="button" class="chatbot-close-btn" (click)="closeChatbot()" aria-label="Fermer le chatbot">
+                    ×
+                </button>
+            </header>
+
+            <div class="chatbot-widget-body">
+                <app-athlete-chatbot variant="widget" title="Assistant Athlete"
+                    subtitle="Posez une question sur vos seances, vos reservations ou votre progression.">
+                </app-athlete-chatbot>
+            </div>
+        </section>
+
+        <button type="button" class="chatbot-launcher" [class.open]="isChatOpen" (click)="toggleChatbot()"
+            [attr.aria-expanded]="isChatOpen" aria-controls="athlete-dashboard-chatbot"
+            [attr.aria-label]="isChatOpen ? 'Close assistant chat' : 'Open assistant chat'">
+            <span class="launcher-ring"></span>
+            <span class="launcher-icon">✦</span>
+        </button>
     </div>
 </section>

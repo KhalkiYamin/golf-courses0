@@ -1,0 +1,44 @@
+sequenceDiagram
+    actor U as Utilisateur
+    participant B as Navigateur
+    participant UC as UserController
+    participant AC as AuthController
+    participant AS as AuthService
+    participant DB as Base de donnees
+
+    U->>B: Ouvre le site
+    B->>UC: Charge l'application
+    UC-->>B: Affiche la page d'accueil
+
+    U->>B: Clique sur "Connexion"
+    B->>UC: Navigation vers /login
+    UC-->>B: Affiche la page de connexion (formulaire email + mot de passe)
+
+    loop Verification des identifiants
+        U->>B: Saisit email et mot de passe
+        B->>UC: Soumet le formulaire
+        UC->>AC: POST /auth/login {email, password}
+        AC->>AS: findByEmail(email)
+        AS->>DB: SELECT * FROM users WHERE email = ?
+
+        alt Email introuvable
+            DB-->>AS: null
+            AS-->>AC: Utilisateur introuvable
+            AC-->>UC: 404 / "Utilisateur non trouve"
+            UC-->>B: Affiche message "Utilisateur non trouve"
+        else Email correct, mot de passe incorrect
+            DB-->>AS: Utilisateur trouve
+            AS->>AS: verifyPassword(password)
+            AS-->>AC: Mot de passe invalide
+            AC-->>UC: 401 / "Email ou mot de passe incorrect"
+            UC-->>B: Affiche message "Email ou mot de passe incorrect"
+        else Email et mot de passe corrects
+            DB-->>AS: Utilisateur trouve
+            AS->>AS: verifyPassword(password)
+            AS-->>AC: OK + role utilisateur
+            AC-->>UC: 200 / token JWT + role
+            UC->>UC: Stocke le token (localStorage)
+            UC-->>B: Redirige vers le dashboard (selon role)
+            B-->>U: Affiche le dashboard
+        end
+    end

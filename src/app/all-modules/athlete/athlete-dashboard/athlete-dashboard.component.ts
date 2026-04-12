@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { AthleteDashboardService } from '../../../services/athlete-dashboard.service';
 import {
     ReservationSeanceDto,
@@ -46,6 +46,7 @@ export class AthleteDashboardComponent implements OnInit {
     showCancelledAlert = false;
     cancelledAlertTitle = 'Séance annulée';
     cancelledAlertMessage = '';
+    isChatOpen = false;
 
     private toastTimeoutRef: any = null;
     private hasLoadedReservations = false;
@@ -69,6 +70,13 @@ export class AthleteDashboardComponent implements OnInit {
         this.loadMyReservations();
         this.loadPresenceSummary();
         this.loadLastSession();
+    }
+
+    @HostListener('document:keydown.escape')
+    handleEscapeKey(): void {
+        if (this.isChatOpen) {
+            this.closeChatbot();
+        }
     }
 
     loadAthleteProfile(): void {
@@ -109,6 +117,55 @@ export class AthleteDashboardComponent implements OnInit {
                 this.lastSessionLoading = false;
             }
         });
+    }
+
+    get matchingCoachNames(): string[] {
+        const sportNeedle = this.normalizeText(this.athleteSpecialite);
+        if (!sportNeedle) {
+            return [];
+        }
+
+        const unique = new Set<string>();
+        const sessions = [...this.availableSeances, ...this.myReservations];
+
+        sessions.forEach((session) => {
+            const coachName = this.getCoachDisplayName(session).trim();
+            if (!coachName || coachName === 'Coach non défini') {
+                return;
+            }
+
+            const blob = this.normalizeText(
+                `${session.theme || ''} ${session.lieu || ''} ${session.coachNomComplet || ''} ${session.coachNom || ''}`
+            );
+
+            if (this.matchesSpecialization(blob, sportNeedle)) {
+                unique.add(coachName);
+            }
+        });
+
+        return Array.from(unique).slice(0, 5);
+    }
+
+    private matchesSpecialization(value: string, needle: string): boolean {
+        if (!needle) {
+            return false;
+        }
+
+        if (needle.includes('football') || needle.includes('foot')) {
+            return value.includes('football') || value.includes('foot') || value.includes('soccer') || value.includes('futsal');
+        }
+
+        return value.includes(needle);
+    }
+
+    private normalizeText(value: string): string {
+        return (value || '')
+            .toString()
+            .trim()
+            .toLowerCase()
+            .replace(/[éèê]/g, 'e')
+            .replace(/[^a-z0-9\s]/g, ' ')
+            .replace(/\s+/g, ' ');
     }
 
     get availableSeancesToReserve(): ReservationSeanceDto[] {
@@ -305,6 +362,14 @@ export class AthleteDashboardComponent implements OnInit {
 
     closeCancelledAlert(): void {
         this.showCancelledAlert = false;
+    }
+
+    toggleChatbot(): void {
+        this.isChatOpen = !this.isChatOpen;
+    }
+
+    closeChatbot(): void {
+        this.isChatOpen = false;
     }
 
     getToastIcon(): string {

@@ -11,6 +11,8 @@ import { AthleteSessionsComponent } from './athlete-sessions/athlete-sessions.co
 import { AthleteNotificationsComponent } from './athlete-notifications/athlete-notifications.component';
 import { AthletePlanningComponent } from './athlete-planning/athlete-planning.component';
 import { AthleteEvaluationsComponent } from './athlete-evaluations/athlete-evaluations.component';
+import { AthleteChatbotComponent } from './athlete-chatbot/athlete-chatbot.component';
+import { AthleteCoachesComponent } from './athlete-coaches/athlete-coaches.component';
 
 @NgModule({
     declarations: [
@@ -20,7 +22,9 @@ import { AthleteEvaluationsComponent } from './athlete-evaluations/athlete-evalu
         AthleteSessionsComponent,
         AthleteNotificationsComponent,
         AthletePlanningComponent,
-        AthleteEvaluationsComponent
+        AthleteEvaluationsComponent,
+        AthleteChatbotComponent,
+        AthleteCoachesComponent
     ],
     imports: [
         CommonModule,

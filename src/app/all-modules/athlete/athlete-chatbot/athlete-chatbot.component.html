@@ -1,0 +1,74 @@
+<section class="chat-shell" [ngClass]="variant">
+    <div class="chat-header" *ngIf="variant === 'page'">
+        <div>
+            <span class="chat-kicker">Assistant IA</span>
+            <h2>{{ title }}</h2>
+            <p>{{ subtitle }}</p>
+        </div>
+
+        <div class="chat-status-pill">
+            <span class="status-dot"></span>
+            <span>En ligne</span>
+        </div>
+    </div>
+
+    <div class="chat-body" #messagesBody>
+        <div class="intro-card" *ngIf="messages.length <= 1">
+            <div class="intro-icon">✦</div>
+            <div>
+                <strong>Welcome to your smart assistant</strong>
+                <p>Start with a quick action for the fastest answer, then continue with free-text chat.</p>
+            </div>
+        </div>
+
+        <div class="flow-guide" *ngIf="starterMode">
+            <div class="flow-steps">
+                <span>1. Pick a suggestion</span>
+                <span>2. Get tailored answer</span>
+                <span>3. Continue in free chat</span>
+            </div>
+            <button type="button" class="flow-skip-btn" (click)="switchToFreeChat()" [disabled]="loading">
+                Skip to free-text chat
+            </button>
+        </div>
+
+        <div class="quick-actions" *ngIf="starterMode && quickActions.length > 0">
+            <button *ngFor="let action of quickActions" type="button" class="quick-action-btn"
+                (click)="sendQuickAction(action)" [disabled]="loading">
+                {{ action.label }}
+            </button>
+        </div>
+
+        <div *ngFor="let msg of messages" class="message-row" [ngClass]="msg.sender">
+            <div class="message-avatar">
+                {{ msg.sender === 'bot' ? 'AI' : 'Vous' }}
+            </div>
+
+            <div class="message-bubble" [ngClass]="msg.sender">
+                {{ msg.text }}
+            </div>
+        </div>
+
+        <div *ngIf="loading" class="message-row bot loading-row">
+            <div class="message-avatar">AI</div>
+            <div class="message-bubble bot loading-bubble">
+                <span class="typing-dot"></span>
+                <span class="typing-dot"></span>
+                <span class="typing-dot"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="chat-footer">
+        <div class="chat-input-shell">
+            <input type="text" [(ngModel)]="userMessage" [placeholder]="activePlaceholder"
+                (keyup.enter)="sendMessage()">
+            <small *ngIf="starterMode">Tip: quick actions provide the most accurate athlete-specific response.</small>
+            <small *ngIf="!starterMode">Smart assistant connected to your athlete profile and sessions.</small>
+        </div>
+
+        <button type="button" class="send-button" (click)="sendMessage()" [disabled]="loading">
+            Envoyer
+        </button>
+    </div>
+</section>
