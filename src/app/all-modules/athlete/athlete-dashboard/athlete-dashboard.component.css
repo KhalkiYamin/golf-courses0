@@ -51,6 +51,39 @@
     font-size: 14px;
 }
 
+.subscription-status {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.subscription-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+}
+
+.subscription-type {
+    font-size: 13px;
+    color: #059669;
+    font-weight: 500;
+}
+
+.subscription-expiry {
+    font-size: 12px;
+    color: #64748b;
+    font-weight: 400;
+}
+
 .success-alert,
 .error-alert {
     margin-bottom: 18px;
@@ -414,6 +447,35 @@
     transform: translateY(-1px);
 }
 
+.reserve-btn-subscription {
+    background: linear-gradient(135deg, #10b981, #059669);
+    box-shadow: 0 10px 20px rgba(16, 185, 129, 0.25);
+}
+
+.coverage-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 6px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.coverage-label-subscription {
+    background: rgba(16, 185, 129, 0.12);
+    color: #059669;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.coverage-label-payment {
+    background: rgba(37, 99, 235, 0.08);
+    color: #2563eb;
+    border: 1px solid rgba(37, 99, 235, 0.2);
+}
+
 .reserve-btn-disabled,
 .reserve-btn-cancelled {
     background: #cbd5e1;
@@ -598,6 +660,17 @@
     color: white;
     font-weight: 700;
     cursor: pointer;
+}
+
+.alert-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.alert-btn.secondary {
+    background: #f1f5f9;
+    color: #475569;
 }
 
 .chatbot-widget-layer {

@@ -1,4 +1,14 @@
 <section class="payments-page">
+    
+    <!-- TOAST NOTIFICATION -->
+    <div class="toast-container" *ngIf="toastVisible" [ngClass]="'toast-' + toastType">
+        <div class="toast-icon">
+            <i *ngIf="toastType === 'success'" class="fas fa-check-circle"></i>
+            <i *ngIf="toastType === 'error'" class="fas fa-exclamation-circle"></i>
+        </div>
+        <div class="toast-message">{{ toastMessage }}</div>
+    </div>
+
     <div class="stats-grid">
         <article class="stat-card">
             <p class="stat-label">Total encaissé</p>
@@ -11,7 +21,7 @@
         </article>
 
         <article class="stat-card">
-            <p class="stat-label">Paiements en espèces</p>
+            <p class="stat-label">Paiements en espèces en attente</p>
             <h3>{{ totalPendingCash }}</h3>
         </article>
     </div>
@@ -38,23 +48,36 @@
                         <th>Méthode</th>
                         <th>Montant</th>
                         <th>Statut</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     <tr *ngFor="let payment of payments">
                         <td>{{ payment.id }}</td>
-                        <td>{{ asDate(payment.createdAt) | date: 'dd/MM/yyyy HH:mm' }}</td>
+                        <td>{{ asDate(payment.createdAt) | date:'dd/MM/yyyy HH:mm' }}</td>
                         <td>{{ athleteFullName(payment) }}</td>
-                        <td>{{ payment.title }}</td>
-                        <td>{{ payment.coach }}</td>
+                        <td>{{ payment.title || '-' }}</td>
+                        <td>{{ payment.coach || '-' }}</td>
                         <td>{{ payment.paymentType }}</td>
                         <td>{{ payment.paymentMethod }}</td>
                         <td>{{ payment.amount.toFixed(2) }} TND</td>
+
                         <td>
                             <span class="status" [class.status--pending]="isPendingCash(payment)">
                                 {{ displayStatus(payment) }}
                             </span>
+                        </td>
+
+                        <td class="action-cell">
+                            <button *ngIf="isPendingCash(payment)" 
+                                    class="btn btn-sm btn-success" 
+                                    [disabled]="processingPayments.has(payment.id)"
+                                    (click)="confirmerPaiement(payment)">
+                                <span *ngIf="processingPayments.has(payment.id)"><i class="fas fa-spinner fa-spin mr-1"></i> Confirmation...</span>
+                                <span *ngIf="!processingPayments.has(payment.id)"><i class="fas fa-check mr-1"></i> Confirmer</span>
+                            </button>
+                            <span *ngIf="!isPendingCash(payment)" class="action-dash">—</span>
                         </td>
                     </tr>
                 </tbody>

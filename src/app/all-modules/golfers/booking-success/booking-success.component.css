@@ -102,6 +102,20 @@
     box-shadow: 0 10px 30px rgba(37, 99, 235, 0.35);
 }
 
+.step-item.pending {
+    background: rgba(245, 158, 11, 0.18);
+    color: #fed7aa;
+}
+
+.step-item.pending .step-dot {
+    background: rgba(245, 158, 11, 0.35);
+    color: #fdba74;
+}
+
+.pending-icon {
+    color: #f59e0b !important;
+}
+
 /* ── Success Icon ─────────────────────────────── */
 .success-icon-wrap {
     display: flex;

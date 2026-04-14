@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { PaymentService } from 'src/app/services/payment.service';
 import { CheckoutFlowService } from '../services/checkout-flow.service';
+import {
+  ReservationSeanceDto,
+  ReservationSeanceService
+} from 'src/app/services/reservation-seance.service';
 
 @Component({
   selector: 'app-checkout',
@@ -15,6 +19,7 @@ export class CheckoutComponent implements OnInit {
   loading = false;
   paymentError = '';
   selectedPlan: 'SEANCE' | 'MENSUEL' | 'SEMESTRE' | 'ANNUEL' = 'SEANCE';
+  isReservationFlow = false;
 
   private baseTitle = 'Football Training Session';
   private baseDuration = '1 heure';
@@ -76,11 +81,19 @@ export class CheckoutComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
+    private route: ActivatedRoute,
     private paymentService: PaymentService,
-    private checkoutFlow: CheckoutFlowService
+    private checkoutFlow: CheckoutFlowService,
+    private reservationSeanceService: ReservationSeanceService
   ) { }
 
   ngOnInit(): void {
+    // Check if this is a reservation flow
+    this.route.queryParams.subscribe(params => {
+      this.isReservationFlow = params['fromReservation'] === 'true';
+      console.log('🔍 Checkout flow type:', this.isReservationFlow ? 'RESERVATION' : 'REGULAR');
+    });
+
     const cart = this.checkoutFlow.getCart();
 
     if (this.hasValidCartData(cart) && cart.quantity) {
@@ -274,11 +287,29 @@ export class CheckoutComponent implements OnInit {
         this.loading = false;
         const summary = this.buildOrderSummary();
         this.checkoutFlow.saveBookingSummary(summary);
-        this.checkoutFlow.setPaymentCompleted();
+
+        // Différencier le comportement selon le mode de paiement
+        const method = this.form.value.paymentMethod;
+        
+        if (method !== 'CASH') {
+          this.checkoutFlow.setPaymentCompleted();
+        }
+        
         this.checkoutFlow.clearCart();
-        this.router.navigate(['/golfers/booking-success'], {
-          state: { bookingSummary: summary }
-        });
+
+        // Si c'est un flow de réservation, faire la réservation automatiquement
+        if (this.isReservationFlow) {
+          console.log('🎯 Reservation flow detected, making automatic reservation...');
+          this.makeReservationAfterPayment(cart.seanceId, cart.coachId, summary, method);
+        } else {
+          this.router.navigate(['/golfers/booking-success'], {
+            state: { 
+              bookingSummary: summary,
+              paymentMethod: method,
+              message: method === 'CASH' ? 'Vous pouvez réserver votre séance maintenant. Le coach confirmera après validation du paiement.' : '✅ Paiement réussi ! Vous pouvez maintenant réserver votre séance.'
+            }
+          });
+        }
       },
       error: (err) => {
         this.loading = false;
@@ -324,5 +355,43 @@ export class CheckoutComponent implements OnInit {
     } catch {
       return { firstName: '', lastName: '', email: '' };
     }
+  }
+
+  private makeReservationAfterPayment(seanceId: number, coachId: number, paymentSummary: any, paymentMethod: string): void {
+    console.log('📝 Making reservation after payment:', { seanceId, coachId });
+
+    this.reservationSeanceService.reserverSeance(seanceId, coachId).subscribe({
+      next: () => {
+        console.log('✅ Reservation completed successfully after payment!');
+
+        const isCash = paymentMethod === 'CASH';
+        const message = isCash 
+          ? 'Vous pouvez réserver votre séance maintenant. Le coach confirmera après validation du paiement par l’administration.'
+          : '✅ Paiement réussi ! Vous avez réservé votre séance.';
+
+        // Navigate to booking success with reservation confirmation
+        this.router.navigate(['/golfers/booking-success'], {
+          state: {
+            bookingSummary: paymentSummary,
+            reservationCompleted: true,
+            paymentMethod: paymentMethod,
+            message: message
+          }
+        });
+      },
+      error: (error: any) => {
+        console.error('❌ Reservation failed after payment:', error);
+
+        // Even if reservation fails, payment was successful
+        // Navigate to success but indicate reservation issue
+        this.router.navigate(['/golfers/booking-success'], {
+          state: {
+            bookingSummary: paymentSummary,
+            reservationError: true,
+            message: 'Paiement réussi, mais la réservation a échoué. Contactez le support.'
+          }
+        });
+      }
+    });
   }
 }

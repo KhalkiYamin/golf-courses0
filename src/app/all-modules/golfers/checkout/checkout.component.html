@@ -39,15 +39,15 @@
                     <div class="card checkout-card">
                         <div class="card-body">
 
-                            <h4 class="card-title">Details du paiement</h4>
+                            <h4 class="card-title">Détails du paiement</h4>
                             <p class="card-subtitle-hint">
-                                Payez a la seance ou abonnez-vous mensuellement, tous les 6 mois, ou annuellement.
+                                Accédez à vos séances en toute simplicité, avec un paiement sécurisé ou en espèces.
                             </p>
 
                             <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
                                 <div class="section-space">
-                                    <label class="section-label">Selectionnez votre mode de paiement :</label>
+                                    <h5 class="section-title">Choisissez votre mode de paiement</h5>
                                     <div class="method-row">
 
                                         <label class="method-pill">
@@ -57,23 +57,16 @@
                                         </label>
 
                                         <label class="method-pill">
-                                            <input type="radio" formControlName="paymentMethod" value="GPAY">
-                                            <span class="payment-icon payment-icon--gpay">G</span>
-                                            <span>G Pay</span>
-                                        </label>
-
-                                        <label class="method-pill">
-                                            <input type="radio" formControlName="paymentMethod" value="PAYPAL">
-                                            <span class="payment-icon"><i class="fab fa-paypal"></i></span>
-                                            <span>PayPal</span>
-                                        </label>
-
-                                        <label class="method-pill">
                                             <input type="radio" formControlName="paymentMethod" value="CASH">
                                             <span class="payment-icon"><i class="fas fa-money-bill-wave"></i></span>
-                                            <span>Especes (a l'arrivee)</span>
+                                            <span>Espèces (paiement sur place)</span>
                                         </label>
+                                    </div>
 
+                                    <div class="cash-warning-box" *ngIf="form.get('paymentMethod')?.value === 'CASH'">
+                                        <h5>💡 Paiement en espèces</h5>
+                                        <p>Vous pouvez réserver votre séance maintenant.</p>
+                                        <p>Le coach pourra confirmer votre réservation uniquement après validation du paiement par l’administration.</p>
                                     </div>
                                 </div>
 
@@ -83,7 +76,7 @@
 
                                         <div class="col-md-12">
                                             <div class="form-group card-label">
-                                                <label for="card_number">Numero de carte</label>
+                                                <label for="card_number">Numéro de carte</label>
                                                 <div class="card-input-wrap">
                                                     <input class="form-control"
                                                         [class.is-invalid]="isInvalid('cardNumber')" id="card_number"
@@ -139,53 +132,79 @@
                                     <div class="save-checkbox">
                                         <input type="checkbox" id="save_payment" formControlName="saveCard">
                                         <label for="save_payment">
-                                            Enregistrer mes informations de paiement pour les prochaines seances
+                                            Enregistrer mes informations de paiement pour les prochaines séances
                                         </label>
                                     </div>
                                 </div>
 
                                 <div class="section-space">
-                                    <h5 class="section-title">Type de paiement</h5>
-                                    <p class="section-hint">
-                                        Payez a la seance ou abonnez-vous mensuellement, tous les 6 mois, ou
-                                        annuellement.
-                                    </p>
-                                    <div class="type-grid">
+                                    <h5 class="section-title text-center mb-4">Choisissez votre formule</h5>
+                                    <div class="pricing-grid">
 
-                                        <label class="type-option">
+                                        <label class="pricing-card">
                                             <input type="radio" formControlName="paymentType" value="SEANCE">
-                                            <span class="type-icon-badge"><i class="fas fa-running"></i></span>
-                                            <span>Paiement par seance</span>
+                                            <div class="pricing-content">
+                                                <div class="pricing-icon">
+                                                    <i class="fas fa-ticket-alt"></i>
+                                                </div>
+                                                <div class="pricing-title">Paiement par séance</div>
+                                                <div class="pricing-desc">Accédez à une seule séance</div>
+                                            </div>
+                                            <span class="pricing-btn">Sélectionner</span>
                                         </label>
 
-                                        <label class="type-option">
+                                        <label class="pricing-card">
                                             <input type="radio" formControlName="paymentType" value="MENSUEL">
-                                            <span class="type-icon-badge"><i class="far fa-calendar-alt"></i></span>
-                                            <span>Abonnement mensuel</span>
+                                            <div class="pricing-content">
+                                                <div class="pricing-icon">
+                                                    <i class="far fa-calendar-alt"></i>
+                                                </div>
+                                                <div class="pricing-title">Abonnement mensuel</div>
+                                                <div class="pricing-desc">Accès illimité pendant 30 jours</div>
+                                            </div>
+                                            <span class="pricing-btn">Sélectionner</span>
                                         </label>
 
-                                        <label class="type-option">
+                                        <label class="pricing-card">
                                             <input type="radio" formControlName="paymentType" value="SEMESTRE">
-                                            <span class="type-icon-badge"><i class="fas fa-calendar-week"></i></span>
-                                            <span>Abonnement 6 mois</span>
+                                            <div class="pricing-content">
+                                                <div class="pricing-icon">
+                                                    <i class="fas fa-rocket"></i>
+                                                </div>
+                                                <div class="pricing-title">Abonnement 6 mois</div>
+                                                <div class="pricing-desc">Engagement plus long</div>
+                                            </div>
+                                            <span class="pricing-btn">Sélectionner</span>
                                         </label>
 
-                                        <label class="type-option">
+                                        <label class="pricing-card">
                                             <input type="radio" formControlName="paymentType" value="ANNUEL">
-                                            <span class="type-icon-badge"><i class="fas fa-crown"></i></span>
-                                            <span>Abonnement annuel</span>
+                                            <div class="pricing-content">
+                                                <div class="pricing-icon">
+                                                    <i class="fas fa-crown"></i>
+                                                </div>
+                                                <div class="pricing-title">Abonnement annuel</div>
+                                                <div class="pricing-desc">Meilleur rapport qualité-prix</div>
+                                            </div>
+                                            <span class="pricing-btn">Sélectionner</span>
                                         </label>
 
                                     </div>
                                 </div>
 
-                                <div class="submit-section mt-4">
-                                    <div class="text-danger small mb-2" *ngIf="paymentError">
+                                <div class="submit-section-modern mt-5">
+                                    <div class="text-danger small mb-2 text-center" *ngIf="paymentError">
                                         {{ paymentError }}
                                     </div>
-                                    <button type="submit" class="btn btn-primary submit-btn" [disabled]="loading">
+                                    <p class="money-back-hint">
+                                        Méthode de paiement 100% sécurisée.
+                                    </p>
+                                    <button type="submit" class="cta-upgrade-btn" [disabled]="loading">
                                         <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
-                                        <span *ngIf="!loading">Payer maintenant — {{ total.toFixed(2) }} TND</span>
+                                        <ng-container *ngIf="!loading">
+                                            <span *ngIf="form.get('paymentType')?.value === 'SEANCE'">Payer maintenant — {{ total.toFixed(2) }} TND</span>
+                                            <span *ngIf="form.get('paymentType')?.value !== 'SEANCE'">S'abonner — {{ total.toFixed(2) }} TND</span>
+                                        </ng-container>
                                         <span *ngIf="loading">Traitement en cours...</span>
                                     </button>
                                 </div>

@@ -1,9 +1,11 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AthleteDashboardService } from '../../../services/athlete-dashboard.service';
 import {
     ReservationSeanceDto,
     ReservationSeanceService
 } from 'src/app/services/reservation-seance.service';
+import { CheckoutFlowService } from '../../golfers/services/checkout-flow.service';
 
 interface AthletePresenceSummary {
     presenceRate: number;
@@ -48,6 +50,9 @@ export class AthleteDashboardComponent implements OnInit {
     cancelledAlertMessage = '';
     isChatOpen = false;
 
+    showPaymentModal = false;
+    sessionToPay: ReservationSeanceDto | null = null;
+
     private toastTimeoutRef: any = null;
     private hasLoadedReservations = false;
 
@@ -59,9 +64,15 @@ export class AthleteDashboardComponent implements OnInit {
     totalPresenceSeances = 0;
     athleteSpecialite = '';
 
+    hasActiveSubscription = false;
+    subscriptionType = '';
+    subscriptionExpiry: string | null = null;
+
     constructor(
         private athleteDashboardService: AthleteDashboardService,
-        private reservationSeanceService: ReservationSeanceService
+        private reservationSeanceService: ReservationSeanceService,
+        private router: Router,
+        private checkoutFlow: CheckoutFlowService
     ) { }
 
     ngOnInit(): void {
@@ -77,27 +88,53 @@ export class AthleteDashboardComponent implements OnInit {
         if (this.isChatOpen) {
             this.closeChatbot();
         }
+
+        if (this.showPaymentModal) {
+            this.closePaymentModal();
+        }
     }
 
     loadAthleteProfile(): void {
         this.athleteDashboardService.getAthleteProfile().subscribe({
             next: (profile: any) => {
+                console.log('Athlete profile loaded:', profile);
+
                 const rawSport = profile?.sport;
 
                 if (typeof rawSport === 'string') {
                     this.athleteSpecialite = rawSport.trim();
-                    return;
-                }
-
-                if (rawSport && typeof rawSport === 'object') {
+                } else if (rawSport && typeof rawSport === 'object') {
                     this.athleteSpecialite = (rawSport.title || rawSport.nom || '').toString().trim();
-                    return;
+                } else {
+                    this.athleteSpecialite = '';
                 }
 
-                this.athleteSpecialite = '';
+                this.hasActiveSubscription = profile?.hasActiveSubscription ||
+                    profile?.subscriptionActive ||
+                    profile?.abonnementActif ||
+                    false;
+
+                this.subscriptionType = profile?.subscriptionType ||
+                    profile?.planType ||
+                    profile?.abonnementType ||
+                    '';
+
+                this.subscriptionExpiry = profile?.subscriptionExpiry ||
+                    profile?.dateExpiration ||
+                    profile?.abonnementExpiration ||
+                    null;
+
+                console.log('Subscription status:', {
+                    hasActiveSubscription: this.hasActiveSubscription,
+                    subscriptionType: this.subscriptionType,
+                    subscriptionExpiry: this.subscriptionExpiry
+                });
             },
             error: () => {
                 this.athleteSpecialite = '';
+                this.hasActiveSubscription = false;
+                this.subscriptionType = '';
+                this.subscriptionExpiry = null;
             }
         });
     }
@@ -178,11 +215,20 @@ export class AthleteDashboardComponent implements OnInit {
 
         this.reservationSeanceService.getSeancesDisponiblesPourAthlete().subscribe({
             next: (data: ReservationSeanceDto[]) => {
+                console.log('📥 Available seances loaded from API:', data);
+                console.log('🔍 Sample seance with IDs:', data[0] ? {
+                    id: data[0].id,
+                    seanceId: data[0].seanceId,
+                    coachId: data[0].coachId,
+                    theme: data[0].theme
+                } : 'No seances');
+
                 this.availableSeances = data || [];
                 this.stats[0].value = this.availableSeancesToReserve.length;
                 this.loading = false;
             },
             error: (error: any) => {
+                console.error('❌ Error loading seances:', error);
                 this.errorMessage = error?.error?.message || 'Impossible de charger les séances disponibles.';
                 this.loading = false;
             }
@@ -243,7 +289,46 @@ export class AthleteDashboardComponent implements OnInit {
         });
     }
 
-    reserverSeance(seanceId: number, coachId: number): void {
+    isSessionCoveredBySubscription(session: ReservationSeanceDto): boolean {
+        if (!this.hasActiveSubscription) {
+            return false;
+        }
+        if (!this.subscriptionExpiry) {
+            return true;
+        }
+        const sessionDate = this.parseDateSafe(session.dateSeance);
+        const expiryDate = this.parseDateSafe(this.subscriptionExpiry);
+        if (!sessionDate || !expiryDate) {
+            return false;
+        }
+        return sessionDate <= expiryDate;
+    }
+
+    private parseDateSafe(value: string): Date | null {
+        if (!value) {
+            return null;
+        }
+        // Handle dd/MM/yyyy
+        const dmyMatch = value.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+        if (dmyMatch) {
+            const d = new Date(Number(dmyMatch[3]), Number(dmyMatch[2]) - 1, Number(dmyMatch[1]));
+            return isNaN(d.getTime()) ? null : d;
+        }
+        // Handle yyyy-MM-dd (normalize to local midnight to avoid timezone shifts)
+        const isoMatch = value.match(/^(\d{4})-(\d{2})-(\d{2})/);
+        if (isoMatch) {
+            const d = new Date(Number(isoMatch[1]), Number(isoMatch[2]) - 1, Number(isoMatch[3]));
+            return isNaN(d.getTime()) ? null : d;
+        }
+        // Fallback for full ISO strings
+        const d = new Date(value);
+        return isNaN(d.getTime()) ? null : d;
+    }
+
+    handleReserveClick(session: ReservationSeanceDto): void {
+        const seanceId = this.getSeanceId(session);
+        const coachId = Number(session.coachId || 0);
+
         if (!seanceId || seanceId <= 0) {
             this.errorMessage = 'Identifiant de séance invalide.';
             this.showToast('error', this.errorMessage);
@@ -256,23 +341,92 @@ export class AthleteDashboardComponent implements OnInit {
             return;
         }
 
-        this.successMessage = '';
-        this.errorMessage = '';
+        if (this.isSessionCoveredBySubscription(session)) {
+            this.reserveDirectly(seanceId, coachId);
+            return;
+        }
 
+        this.openPaymentModal(session);
+    }
+
+    reserveDirectly(seanceId: number, coachId: number): void {
         this.reservationSeanceService.reserverSeance(seanceId, coachId).subscribe({
             next: () => {
+                this.errorMessage = '';
                 this.successMessage = 'Réservation envoyée avec succès.';
                 this.showToast('success', this.successMessage);
                 this.loadAvailableSeances();
                 this.loadMyReservations();
-                this.loadLastSession();
+                this.loadPresenceSummary();
+                this.loadAthleteProfile();
             },
             error: (error: any) => {
-                this.errorMessage = error?.error?.message || 'Impossible d’effectuer la réservation.';
-                this.showToast('error', this.errorMessage);
-                this.loadAvailableSeances();
+                const message =
+                    error?.error?.message ||
+                    error?.error ||
+                    'Impossible de réserver cette séance.';
+                this.errorMessage = message;
+                this.successMessage = '';
+                this.showToast('error', message);
             }
         });
+    }
+
+    openPaymentModal(session: ReservationSeanceDto): void {
+        this.sessionToPay = session;
+        this.showPaymentModal = true;
+    }
+
+    closePaymentModal(): void {
+        this.showPaymentModal = false;
+        this.sessionToPay = null;
+    }
+
+    confirmPayment(): void {
+        if (!this.sessionToPay) {
+            return;
+        }
+
+        const seanceId = this.getSeanceId(this.sessionToPay);
+        const coachId = Number(this.sessionToPay.coachId || 0);
+
+        if (!seanceId || seanceId <= 0) {
+            this.errorMessage = 'Identifiant de séance invalide.';
+            this.showToast('error', this.errorMessage);
+            return;
+        }
+
+        if (!coachId || coachId <= 0) {
+            this.errorMessage = 'Coach invalide.';
+            this.showToast('error', this.errorMessage);
+            return;
+        }
+
+        const cartData = {
+            seanceId: seanceId,
+            coachId: coachId,
+            title: (this.sessionToPay.theme || 'Séance d\'entraînement').trim(),
+            duration: '1 heure',
+            coach: this.getCoachDisplayName(this.sessionToPay),
+            unitPrice: 20,
+            quantity: 1,
+            subtotal: 20,
+            discount: 0
+        };
+
+        console.log('💳 Saving cart data for checkout:', cartData);
+
+        this.checkoutFlow.saveCart(cartData);
+
+        this.router.navigate(['/golfers/checkout'], {
+            queryParams: {
+                seanceId: seanceId,
+                coachId: coachId,
+                fromReservation: 'true'
+            }
+        });
+
+        this.closePaymentModal();
     }
 
     getReservationBadgeLabel(statut: string): string {

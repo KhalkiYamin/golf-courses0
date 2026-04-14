@@ -1,8 +1,6 @@
 .checkout-shell {
   min-height: 100vh;
-  background:
-    linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(30, 41, 59, 0.94)),
-    url('/assets/img/bg/pattern-bg.jpg') center/cover no-repeat;
+  background: #0A0A10;
   color: #f8fafc;
   padding-bottom: 40px;
 }
@@ -540,6 +538,201 @@
   }
 }
 
+/* Custom CSS for new French UI Elements */
+
+.cash-warning-box {
+  background: rgba(234, 179, 8, 0.1);
+  border: 1px solid rgba(234, 179, 8, 0.4);
+  border-left: 4px solid #eab308;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 16px;
+  color: #fef08a;
+  box-shadow: 0 0 15px rgba(234, 179, 8, 0.15);
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.cash-warning-box h5 {
+  color: #fde047;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+}
+
+.cash-warning-box p {
+  margin-bottom: 4px;
+  font-size: 0.95rem;
+}
+
+.cash-warning-box p:last-child {
+  margin-bottom: 0;
+}
+
+/* Modern Pricing Cards CSS based on Screenshot */
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 20px;
+}
+
+@media (max-width: 991.98px) {
+  .pricing-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .pricing-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pricing-card {
+  display: flex !important;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #111119;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
+  padding: 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+}
+
+.pricing-card input[type="radio"] {
+  display: none;
+}
+
+.pricing-content {
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.pricing-icon {
+  font-size: 24px;
+  color: #818cf8;
+  margin-bottom: 16px;
+  height: 48px;
+  width: 48px;
+  border-radius: 12px;
+  background: rgba(99, 102, 241, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(99, 102, 241, 0.15);
+  transition: all 0.3s ease;
+}
+
+.pricing-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: #e2e8f0;
+  margin-bottom: 8px;
+}
+
+.pricing-desc {
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.4;
+  min-height: 40px;
+}
+
+.pricing-btn {
+  display: inline-block;
+  width: 100%;
+  padding: 10px 0;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.05);
+  color: #94a3b8;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.pricing-card:hover {
+  background: #131422;
+  border-color: rgba(99, 102, 241, 0.3);
+}
+
+.pricing-card:has(input:checked) {
+  background: #1a1738;
+  border-color: #6366f1;
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.15), inset 0 0 0 1px rgba(99, 102, 241, 0.3);
+}
+
+.pricing-card:has(input:checked) .pricing-title {
+  color: #ffffff;
+}
+
+.pricing-card:has(input:checked) .pricing-btn {
+  background: #6366f1;
+  color: #ffffff;
+}
+
+/* Modern Upgrade CTA */
+
+.submit-section-modern {
+  text-align: center;
+}
+
+.money-back-hint {
+  font-size: 13px;
+  color: #94a3b8;
+  margin-bottom: 16px;
+}
+
+.cta-upgrade-btn {
+  display: inline-block;
+  width: 100%;
+  max-width: 400px;
+  padding: 14px 20px;
+  background: linear-gradient(90deg, #6d28d9, #4f46e5);
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 10px 25px rgba(79, 70, 229, 0.4);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cta-upgrade-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 35px rgba(79, 70, 229, 0.5);
+  filter: brightness(1.1);
+}
+
+.cta-upgrade-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.submit-btn {
+  background: linear-gradient(135deg, #1e3a8a, #3b82f6) !important;
+  border-radius: 999px !important; 
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.4) !important;
+}
+
+.method-pill:has(input:checked), .type-option:has(input:checked) {
+  border-color: #60a5fa !important;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.6), inset 0 0 10px rgba(59, 130, 246, 0.2) !important; 
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9)) !important;
+}
 @media (max-width: 767.98px) {
   .checkout-page-title {
     font-size: 30px;

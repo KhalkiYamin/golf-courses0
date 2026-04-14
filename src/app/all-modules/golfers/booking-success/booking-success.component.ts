@@ -20,6 +20,11 @@ export class BookingSuccessComponent implements OnInit {
     subtotal: 20
   };
 
+  successMessage = 'Votre paiement a été traité avec succès !';
+  isCashPayment = false;
+  reservationCompleted = false;
+  reservationError = false;
+
   constructor(
     private checkoutFlow: CheckoutFlowService,
     private router: Router
@@ -36,11 +41,30 @@ export class BookingSuccessComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const nav = this.router.getCurrentNavigation();
-    const stateSummary = nav?.extras?.state?.bookingSummary as CheckoutCart | undefined;
+    const state = history.state || {};
+    const stateSummary = state.bookingSummary as CheckoutCart | undefined;
+    const stateMessage = state.message as string | undefined;
+    const paymentMethod = state.paymentMethod as string | undefined;
+    const reservationCompleted = state.reservationCompleted as boolean | undefined;
+    const reservationError = state.reservationError as boolean | undefined;
 
     if (this.isValidSummary(stateSummary)) {
       this.cart = stateSummary;
+
+      // Gérer les différents états
+      if (reservationCompleted) {
+        this.reservationCompleted = true;
+        this.successMessage = stateMessage || 'Paiement et réservation effectués avec succès !';
+      } else if (reservationError) {
+        this.reservationError = true;
+        this.successMessage = stateMessage || 'Paiement réussi, mais la réservation a échoué.';
+      } else if (paymentMethod === 'CASH' && stateMessage) {
+        this.successMessage = stateMessage;
+        this.isCashPayment = true;
+      } else if (stateMessage) {
+        this.successMessage = stateMessage;
+      }
+
       return;
     }
 

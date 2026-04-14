@@ -29,6 +29,9 @@ export interface ReservationSeanceDto {
     seanceStatut?: string;
     annuleeMoinsDe24h?: boolean;
     messageAnnulation?: string;
+
+    paymentMethod?: string;
+    paymentStatus?: string;
 }
 
 @Injectable({
@@ -197,7 +200,9 @@ export class ReservationSeanceService {
             complet: item?.complet ?? false,
             seanceStatut: item?.seanceStatut ?? item?.seance?.statut ?? '',
             annuleeMoinsDe24h: item?.annuleeMoinsDe24h ?? false,
-            messageAnnulation: item?.messageAnnulation ?? ''
+            messageAnnulation: item?.messageAnnulation ?? '',
+            paymentMethod: item?.paymentMethod || item?.paiementMethode || item?.paiement?.paymentMethod || item?.paiement?.methode || '',
+            paymentStatus: item?.paymentStatus || item?.paiementStatus || item?.paiement?.status || ''
         };
     }
 

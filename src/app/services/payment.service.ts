@@ -70,4 +70,10 @@ export class PaymentService {
             headers: this.getHeaders()
         });
     }
+
+    confirmCashPayment(id: number): Observable<PaymentRecord> {
+        return this.http.put<PaymentRecord>(`${this.apiUrl}/${id}/confirm-cash`, {}, {
+            headers: this.getHeaders()
+        });
+    }
 }

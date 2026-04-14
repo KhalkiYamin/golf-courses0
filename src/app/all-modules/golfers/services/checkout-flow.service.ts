@@ -10,6 +10,7 @@ export interface CheckoutCart {
     quantity: number;
     subtotal: number;
     discount?: number;
+    paymentPending?: boolean;
     customerInfo?: {
         firstName: string;
         lastName: string;
@@ -40,7 +41,8 @@ export class CheckoutFlowService {
         unitPrice: 20,
         quantity: 1,
         subtotal: 20,
-        discount: 0
+        discount: 0,
+        paymentPending: false
     };
 
     constructor() {
@@ -66,7 +68,8 @@ export class CheckoutFlowService {
             unitPrice: 20,
             quantity: 1,
             subtotal: 20,
-            discount: 0
+            discount: 0,
+            paymentPending: false
         };
         localStorage.removeItem(CART_KEY);
     }
@@ -77,6 +80,10 @@ export class CheckoutFlowService {
 
     setPaymentCompleted(): void {
         localStorage.setItem(PAYMENT_COMPLETED_KEY, 'true');
+    }
+
+    getPaymentCompleted(): boolean {
+        return localStorage.getItem(PAYMENT_COMPLETED_KEY) === 'true';
     }
 
     saveBookingSummary(cart: CheckoutCart): void {

@@ -50,6 +50,22 @@ export class CoachReservationsComponent implements OnInit {
 
     accepter(reservation: ReservationSeanceDto): void {
         if (!reservation.id) return;
+
+        const pMethod = (reservation.paymentMethod || '').toString().trim().toUpperCase();
+        const pStatus = (reservation.paymentStatus || '').toString().trim().toUpperCase();
+
+        const isCashMethod = pMethod === 'CASH' || pMethod === 'ESPECE' || pMethod === 'ESPECES';
+        const isCashPending = (isCashMethod && pStatus !== 'PAID' && pStatus !== 'COMPLETED') ||
+                              pStatus === 'PENDING_CASH' ||
+                              (isCashMethod && pStatus === '');
+
+        if (isCashPending) {
+            this.errorMessage = '❗ Paiement non confirmé : Cette réservation ne peut pas être acceptée tant que le paiement n’est pas validé par l’administration.';
+            window.scrollTo({ top: 0, behavior: 'smooth' }); // To ensure user sees the error
+            setTimeout(() => this.errorMessage = '', 5000); // Clear error message after a few seconds
+            return;
+        }
+
         this.processingId = reservation.id;
         this.successMessage = '';
         this.errorMessage = '';

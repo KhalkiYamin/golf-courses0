@@ -8,6 +8,12 @@ import { PaymentRecord, PaymentService } from 'src/app/services/payment.service'
 })
 export class PaymentsComponent implements OnInit {
     payments: PaymentRecord[] = [];
+    processingPayments = new Set<number>();
+
+    toastVisible = false;
+    toastType: 'success' | 'error' = 'success';
+    toastMessage = '';
+    private toastTimeoutRef: any = null;
 
     constructor(private paymentService: PaymentService) { }
 
@@ -22,11 +28,45 @@ export class PaymentsComponent implements OnInit {
     }
 
     isPendingCash(payment: PaymentRecord): boolean {
-        return this.isCashPayment(payment) || payment.status === 'PENDING_CASH';
+        return (this.isCashPayment(payment) && payment.status !== 'PAID') || payment.status === 'PENDING_CASH';
     }
 
     private isCollected(payment: PaymentRecord): boolean {
-        return !this.isCashPayment(payment) && payment.status === 'PAID';
+        return payment.status === 'PAID';
+    }
+
+    showToast(type: 'success' | 'error', message: string): void {
+        this.toastType = type;
+        this.toastMessage = message;
+        this.toastVisible = true;
+        if (this.toastTimeoutRef) {
+            clearTimeout(this.toastTimeoutRef);
+        }
+        this.toastTimeoutRef = setTimeout(() => {
+            this.toastVisible = false;
+        }, 3000);
+    }
+
+    confirmerPaiement(payment: PaymentRecord): void {
+        this.processingPayments.add(payment.id);
+        
+        this.paymentService.confirmCashPayment(payment.id).subscribe({
+            next: (updatedPayment) => {
+                this.processingPayments.delete(payment.id);
+                payment.status = 'PAID';
+                payment.paymentMethod = updatedPayment?.paymentMethod || payment.paymentMethod;
+                
+                // Forcer le rafraîchissement des calculs auto (total, validés, pending)
+                this.payments = [...this.payments];
+                
+                this.showToast('success', 'Paiement en espèces confirmé avec succès !');
+            },
+            error: (err) => {
+                this.processingPayments.delete(payment.id);
+                console.error('Erreur de confirmation:', err);
+                this.showToast('error', 'Erreur lors de la confirmation. Veuillez vérifier votre connexion.');
+            }
+        });
     }
 
     displayStatus(payment: PaymentRecord): string {

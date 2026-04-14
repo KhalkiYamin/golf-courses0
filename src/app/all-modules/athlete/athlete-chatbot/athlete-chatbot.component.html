@@ -1,14 +1,14 @@
-<section class="chat-shell" [ngClass]="variant">
+<section class="chat-shell" [ngClass]="variant" dir="rtl" lang="ar">
     <div class="chat-header" *ngIf="variant === 'page'">
         <div>
-            <span class="chat-kicker">Assistant IA</span>
+            <span class="chat-kicker">المساعد الذكي</span>
             <h2>{{ title }}</h2>
             <p>{{ subtitle }}</p>
         </div>
 
         <div class="chat-status-pill">
             <span class="status-dot"></span>
-            <span>En ligne</span>
+            <span>متصل الآن</span>
         </div>
     </div>
 
@@ -16,19 +16,19 @@
         <div class="intro-card" *ngIf="messages.length <= 1">
             <div class="intro-icon">✦</div>
             <div>
-                <strong>Welcome to your smart assistant</strong>
-                <p>Start with a quick action for the fastest answer, then continue with free-text chat.</p>
+                <strong>مرحبًا بك في مساعدك الذكي</strong>
+                <p>ابدأ باختيار سريع للحصول على إجابة أسرع، ثم واصل المحادثة بكتابة ما تريد.</p>
             </div>
         </div>
 
         <div class="flow-guide" *ngIf="starterMode">
             <div class="flow-steps">
-                <span>1. Pick a suggestion</span>
-                <span>2. Get tailored answer</span>
-                <span>3. Continue in free chat</span>
+                <span>1. اختر اقتراحًا</span>
+                <span>2. احصل على إجابة مناسبة</span>
+                <span>3. واصل المحادثة بحرية</span>
             </div>
             <button type="button" class="flow-skip-btn" (click)="switchToFreeChat()" [disabled]="loading">
-                Skip to free-text chat
+                الانتقال إلى المحادثة الحرة
             </button>
         </div>
 
@@ -41,7 +41,7 @@
 
         <div *ngFor="let msg of messages" class="message-row" [ngClass]="msg.sender">
             <div class="message-avatar">
-                {{ msg.sender === 'bot' ? 'AI' : 'Vous' }}
+                {{ msg.sender === 'bot' ? 'AI' : 'أنت' }}
             </div>
 
             <div class="message-bubble" [ngClass]="msg.sender">
@@ -63,12 +63,12 @@
         <div class="chat-input-shell">
             <input type="text" [(ngModel)]="userMessage" [placeholder]="activePlaceholder"
                 (keyup.enter)="sendMessage()">
-            <small *ngIf="starterMode">Tip: quick actions provide the most accurate athlete-specific response.</small>
-            <small *ngIf="!starterMode">Smart assistant connected to your athlete profile and sessions.</small>
+            <small *ngIf="starterMode">ملاحظة: الاختيارات السريعة تعطي إجابات أدق حسب ملفك الرياضي.</small>
+            <small *ngIf="!starterMode">المساعد الذكي مرتبط بملفك الرياضي وحصصك.</small>
         </div>
 
         <button type="button" class="send-button" (click)="sendMessage()" [disabled]="loading">
-            Envoyer
+            إرسال
         </button>
     </div>
 </section>

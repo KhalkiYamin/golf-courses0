@@ -4,10 +4,15 @@
     <div class="success-topbar">
         <div class="container">
             <div class="success-heading">
-                <span class="success-kicker">RESERVATION CONFIRMEE</span>
+                <span class="success-kicker" *ngIf="reservationCompleted">RESERVATION CONFIRMEE</span>
+                <span class="success-kicker" *ngIf="reservationError">PROBLEME DE RESERVATION</span>
+                <span class="success-kicker" *ngIf="isCashPayment && !reservationCompleted && !reservationError">DEMANDE
+                    DE PAIEMENT ENREGISTREE</span>
+                <span class="success-kicker"
+                    *ngIf="!isCashPayment && !reservationCompleted && !reservationError">PAIEMENT CONFIRME</span>
                 <h1 class="success-page-title">Confirmation</h1>
                 <p class="success-copy">
-                    Votre seance a ete reservee avec succes. Un email de confirmation vous a ete envoye.
+                    {{ successMessage }}
                 </p>
             </div>
 
@@ -25,9 +30,11 @@
                     <span class="step-dot"><i class="fas fa-check"></i></span>
                     <span class="step-label">Paiement</span>
                 </div>
-                <div class="step-item active">
-                    <span class="step-dot">4</span>
-                    <span class="step-label">Confirmation</span>
+                <div class="step-item" [class.active]="!isCashPayment" [class.pending]="isCashPayment">
+                    <span class="step-dot" *ngIf="!isCashPayment">4</span>
+                    <span class="step-dot pending-icon" *ngIf="isCashPayment"><i class="fas fa-clock"></i></span>
+                    <span class="step-label" *ngIf="!isCashPayment">Confirmation</span>
+                    <span class="step-label" *ngIf="isCashPayment">En attente</span>
                 </div>
             </nav>
         </div>

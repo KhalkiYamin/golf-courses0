@@ -13,6 +13,13 @@
             <p class="dashboard-subtitle" *ngIf="athleteSpecialite">
                 Spécialité: {{ athleteSpecialite }}
             </p>
+            <div class="subscription-status" *ngIf="hasActiveSubscription">
+                <span class="subscription-badge">⭐ Abonnement actif</span>
+                <span class="subscription-type" *ngIf="subscriptionType">{{ subscriptionType }}</span>
+                <span class="subscription-expiry" *ngIf="subscriptionExpiry">
+                    Expire le: {{ subscriptionExpiry | date:'dd/MM/yyyy' }}
+                </span>
+            </div>
         </div>
 
         <a class="cart-payment-btn" routerLink="/golfers/cart">
@@ -174,13 +181,24 @@
                             }}
                         </span>
 
+                        <span *ngIf="!isSessionCancelled(session) && !session.complet" class="coverage-label"
+                            [class.coverage-label-subscription]="isSessionCoveredBySubscription(session)"
+                            [class.coverage-label-payment]="!isSessionCoveredBySubscription(session)">
+                            <ng-container *ngIf="isSessionCoveredBySubscription(session)">⭐ Couverte par
+                                abonnement</ng-container>
+                            <ng-container *ngIf="!isSessionCoveredBySubscription(session)">💳 Paiement par
+                                séance</ng-container>
+                        </span>
+
                         <p *ngIf="session.complet && !isSessionCancelled(session)" class="no-place-message">
                             Aucune place disponible
                         </p>
 
                         <button *ngIf="!session.complet && !isSessionCancelled(session)" class="reserve-btn"
-                            (click)="reserverSeance(getSeanceId(session), session.coachId!)">
-                            Réserver
+                            [class.reserve-btn-subscription]="isSessionCoveredBySubscription(session)"
+                            (click)="handleReserveClick(session)">
+                            <span *ngIf="isSessionCoveredBySubscription(session)">⭐ Réserver</span>
+                            <span *ngIf="!isSessionCoveredBySubscription(session)">Réserver</span>
                         </button>
 
                         <button *ngIf="session.complet && !isSessionCancelled(session)"
@@ -318,6 +336,24 @@
             <button type="button" class="alert-btn" (click)="closeCancelledAlert()">
                 Compris
             </button>
+        </div>
+    </div>
+
+    <div class="cancel-alert-overlay" *ngIf="showPaymentModal" (click)="closePaymentModal()">
+        <div class="cancel-alert-modal" (click)="$event.stopPropagation()">
+            <div class="cancel-alert-head">
+                <span class="alert-dot"></span>
+                <h3>Paiement requis</h3>
+            </div>
+            <p>Vous devez d'abord effectuer le paiement pour réserver cette séance.</p>
+            <div class="alert-buttons">
+                <button type="button" class="alert-btn secondary" (click)="closePaymentModal()">
+                    Annuler
+                </button>
+                <button type="button" class="alert-btn" (click)="confirmPayment()">
+                    Payer maintenant
+                </button>
+            </div>
         </div>
     </div>
 

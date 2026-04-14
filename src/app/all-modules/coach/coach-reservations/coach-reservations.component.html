@@ -55,10 +55,16 @@
                     </div>
                 </div>
 
-                <div class="reservation-meta">
-                    <span class="meta-label">Réservé le</span>
-                    <span class="meta-value">{{ res.dateReservation ? (res.dateReservation | date: 'dd/MM/yyyy') : '-'
-                        }}</span>
+                <div class="reservation-meta" style="display: flex; flex-direction: column;">
+                    <div>
+                        <span class="meta-label">Réservé le</span>
+                        <span class="meta-value">{{ res.dateReservation ? (res.dateReservation | date: 'dd/MM/yyyy') : '-' }}</span>
+                    </div>
+                    <div style="margin-top: 5px;" *ngIf="res.paymentMethod === 'CASH' && (!res.paymentStatus || res.paymentStatus === 'PENDING_CASH' || res.paymentStatus === 'PENDING')">
+                        <span style="font-size: 13px; color: #ff9800; font-weight: 500;">
+                            ⚠️ Paiement espèce en attente
+                        </span>
+                    </div>
                 </div>
 
                 <div class="status-col">

@@ -1,5 +1,4 @@
 import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
-
 import { ChatbotService } from '../../../services/chatbot.service';
 
 interface Message {
@@ -19,26 +18,27 @@ interface QuickAction {
 })
 export class AthleteChatbotComponent implements AfterViewInit {
     @Input() variant: 'page' | 'widget' = 'page';
-    @Input() title = 'Assistant Athlete';
-    @Input() subtitle = 'Posez vos questions sur vos seances, reservations et entrainements.';
-    @Input() placeholder = 'Ecrire votre message...';
+    @Input() title = 'المساعد الرياضي';
+    @Input() subtitle = 'اطرح أسئلتك حول حصصك، حجوزاتك، وتمارينك.';
+    @Input() placeholder = 'اكتب رسالتك هنا...';
 
     @ViewChild('messagesBody') private messagesBody?: ElementRef<HTMLDivElement>;
 
     userMessage = '';
     loading = false;
     starterMode = true;
+
     quickActions: QuickAction[] = [
-        { label: 'My reservations', prompt: 'What reservations do I have?' },
-        { label: 'My next sessions', prompt: 'What are my next sessions?' },
-        { label: 'List of coaches', prompt: 'Show me the list of coaches' },
-        { label: 'Recommend a session', prompt: 'Which session do you recommend for me?' }
+        { label: 'حجوزاتي', prompt: 'ما هي حجوزاتي؟' },
+        { label: 'حصصي القادمة', prompt: 'ما هي حصصي القادمة؟' },
+        { label: 'قائمة المدربين', prompt: 'أظهر لي قائمة المدربين' },
+        { label: 'اقترح لي حصة', prompt: 'ما هي الحصة التي تنصحني بها؟' }
     ];
 
     messages: Message[] = [
         {
             sender: 'bot',
-            text: 'Hello. I can help you with your reservations, upcoming sessions, coaches, and personalized session recommendations.'
+            text: 'مرحبًا، يمكنني مساعدتك في الحجوزات، الحصص القادمة، المدربين، واقتراح الحصص المناسبة لك.'
         }
     ];
 
@@ -50,7 +50,7 @@ export class AthleteChatbotComponent implements AfterViewInit {
 
     get activePlaceholder(): string {
         if (this.starterMode) {
-            return 'Start with a quick action or type your own question...';
+            return 'ابدأ باختيار سريع أو اكتب سؤالك مباشرة...';
         }
 
         return this.placeholder;
@@ -82,7 +82,7 @@ export class AthleteChatbotComponent implements AfterViewInit {
             error: () => {
                 this.messages.push({
                     sender: 'bot',
-                    text: 'I could not reach the server right now. Please try again in a moment.'
+                    text: 'تعذر الاتصال بالخادم الآن. حاول مرة أخرى بعد قليل.'
                 });
                 this.loading = false;
                 this.scrollToBottom();
